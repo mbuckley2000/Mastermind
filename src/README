@@ -1,0 +1,33 @@
+Game States:
+0 - Code maker is making the code
+1 - Code breaker is guessing
+2 - Code maker is giving feedback
+4 - Game over
+
+
+
+The Mastermind Game
+
+    Mastermind is a classic board game for two players, a codemaker and codebreaker. A full description can be found on https://en.wikipedia.org/wiki/Mastermind_%28board_game%29
+
+    For this piece of coursework, you are asked to design and implement a simple Mastermind Game such that:
+    1. The user is able to specify the number (between 3-8) of colours in the game
+    2. The user is able to specify the number (between 3-8) of pegs being hidden
+    3. The game can be played by
+        (a) one human codemaker and one human codebreaker
+        (b) one computer-based codemaker and one human codebreaker
+        (c) one computer-based codemaker and one computer-based codebreaker
+    4. The game can be saved and re-started.
+    5. The game provides a simple text-based interface to your system.
+
+    You are also required to include with your program files, a README file explain- ing how to use your program and what features it has.
+
+    This basic system is marked out of 70 where
+        • 25 marks are allocated for a running the system which handles correct input (this includes correct saving and restoring of games)
+        • 30 marks for the design and program structure, which includes class de- sign, documentation, decomposition, abstraction, generalisation, variable and method naming and data-encapsulation.
+        • 10 marks for the robustness of the code
+        • 5 marks for a README file
+
+    The remaining 30 marks can be obtained by implementing
+        • A simple graphical user interface implemented using the Java Swing and AWT API (15 marks): to demonstrate that you can work with a Java API library that has not be taught in the unit. To get full marks we are not expecting a commercial standard product, just that can produce a simple graphical interface. A clean nice looking textual interface will also give you some marks in this category.
+        • An intelligent computer-driven codebreaker (15 marks): to demonstrate that you can develop a slightly more complicated algorithm. This algorithm does not have to so sophisticated that you can never beat it but it should do more than randomly guess the code.
