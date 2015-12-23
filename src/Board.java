@@ -35,7 +35,23 @@ public class Board {
 		}
 	}
 
+	public int getMaxLength() {
+		return(length);
+	}
+
+	public int getCurrentLength() {
+		return(stack.size());
+	}
+
 	public Combination peek() {
 		return(stack.peek());
+	}
+
+	public Combination getCombination(int index) {
+		return(stack.get(index));
+	}
+
+	public void empty() {
+		stack.empty();
 	}
 }

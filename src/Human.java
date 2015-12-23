@@ -13,33 +13,14 @@ import java.util.Scanner;
 
 public class Human implements Player {
 	private Scanner input;
+	private Interface playerInterface;
 
 	public Human() {
 		input = new Scanner(System.in);
+		playerInterface = new TextualInterface();
 	}
 
-	public Combination getGuess(int length) {
-		Combination guess = new Combination(length);
-		String colour;
-		for (int i=0; i<length; i++) {
-			//Get color as input
-			System.out.println("Please enter a colour:");
-			colour = input.next();
-			switch(colour.toLowerCase()) {
-				case "red": guess.setPeg(i, Peg.red);
-					break;
-				case "blue": guess.setPeg(i, Peg.blue);
-					break;
-				case "green": guess.setPeg(i, Peg.green);
-					break;
-				case "yellow": guess.setPeg(i, Peg.yellow);
-					break;
-				default:  //Invalid colour
-					i--;
-					System.err.println("Invalid peg colour: " + colour);
-					break;
-			}
-		}
-		return(guess);
+	public Interface getInterface() {
+		return(playerInterface);
 	}
 }

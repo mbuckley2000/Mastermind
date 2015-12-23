@@ -52,6 +52,15 @@ public class Combination extends JComponent {
 		g2.finalize();
 	}
 
+	public void addPeg(Peg p) {
+		for (int i=0; i<length; i++) {
+			if (pegs[i] == null) {
+				pegs[i] = p;
+				break;
+			}
+		}
+	}
+
 	public Boolean equals(Combination c) {
 		if(c.length == length) {
 			Boolean equal = true;
@@ -64,5 +73,22 @@ public class Combination extends JComponent {
 		} else {
 			return(false);
 		}
+	}
+
+	public String toString() {
+		String output = "";
+		for (int i=0; i<length; i++) {
+			try {
+				output = output + " " + pegs[i].toString();
+			} catch (java.lang.NullPointerException e) {
+				//No Peg
+				output = output + " Empty";
+			}
+		}
+		return(output);
+	}
+
+	public int getLength() {
+		return(length);
 	}
 }

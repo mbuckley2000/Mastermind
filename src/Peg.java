@@ -8,25 +8,57 @@ import java.io.File;
  */
 public class Peg {
 	private BufferedImage image;
-	public static Peg red = new Peg("images/red.png");
-	public static Peg blue = new Peg("images/blue.png");
-	public static Peg green = new Peg("images/green.png");
-	public static Peg yellow = new Peg("images/yellow.png");
-	public static Peg black = new Peg("images/yellow.png");
-	public static Peg white = new Peg("images/yellow.png");
+	private String colour;
+	private static int numberOfColours;
 
-	public Peg(String pegImageFilePath) {
+	private static Peg[] allPegs = {
+			new Peg("Red", "images/red.png"),
+			new Peg("Blue", "images/blue.png"),
+			new Peg("Green", "images/green.png"),
+			new Peg("Yellow", "images/yellow.png"),
+			new Peg("Black", "images/yellow.png"),
+			new Peg("White", "images/yellow.png")
+	};
+
+	private static Peg[] availiablePegs;
+
+	public Peg(String colour, String pegImageFilePath) {
 		try {
 			image = ImageIO.read(new File(pegImageFilePath));
 		} catch(java.io.IOException e) {
 			System.err.println("Unable to locate file: " + pegImageFilePath);
 			e.printStackTrace();
 		}
+		this.colour = colour;
 	}
 
 	public Image getImage() {
 		return(image);
 	}
 
+	public String toString() {
+		return(colour);
+	}
 
+	public static Peg getPeg(String name) {
+		for (Peg p : allPegs) {
+			if (name.toLowerCase().equals(p.toString().toLowerCase())) {
+				return(p);
+			}
+		}
+		return(null);
+	}
+
+	public static void setNumberOfColours(int numberOfColours) {
+		Peg.numberOfColours = numberOfColours;
+		availiablePegs = new Peg[numberOfColours];
+		for (int i=0; i<numberOfColours; i++) {
+			availiablePegs[i] = allPegs[i];
+		}
+
+	}
+
+	public static Peg[] getAvailablePegs() {
+		return(availiablePegs);
+	}
 }
