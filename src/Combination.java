@@ -4,10 +4,11 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Combination extends JComponent {
+public class Combination extends JComponent implements Serializable {
 	private int length;
 	protected Peg[] pegs;
 

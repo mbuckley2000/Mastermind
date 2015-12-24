@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by matt on 24/12/2015.
  */
-public class PreviousGuess {
+public class PreviousGuess implements Serializable{
 	private Combination guess;
 	private Combination feedback;
 

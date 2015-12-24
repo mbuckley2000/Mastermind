@@ -2,9 +2,10 @@
  * Created by matt on 22/12/2015.
  */
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class TextualInterface implements Interface {
+public class TextualInterface implements Interface, Serializable {
 	private Scanner input;
 
 	public TextualInterface() {
@@ -81,5 +82,27 @@ public class TextualInterface implements Interface {
 			}
 		}
 		return(combination);
+	}
+
+	public Game menu() {
+		String lastString = "";
+		System.out.println("Load or new game?");
+		Game game = null;
+		do {
+			lastString = input.nextLine().toLowerCase();
+			if (!lastString.contains("load") && !lastString.contains("new")) {
+				System.err.println("Unrecognized command: " + lastString);
+			}
+
+			if (lastString.contains("load")) {
+				System.out.println("Please enter the filename of the save that you wish to load:");
+				game = Mastermind.load(input.nextLine());
+			}
+
+			if (lastString.contains("new")) {
+				game = Mastermind.newGame();
+			}
+		} while (!lastString.contains("load") && !lastString.contains("new"));
+		return(game);
 	}
 }

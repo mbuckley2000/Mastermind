@@ -12,4 +12,5 @@ public interface Interface {
 	void displayBoard(Board board);
 	void displayWin();
 	void displayLose();
+	Game menu();
 }

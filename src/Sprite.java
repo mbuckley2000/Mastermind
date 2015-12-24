@@ -4,8 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Sprite extends JComponent{
+public class Sprite extends JComponent implements Serializable{
 		private BufferedImage image;
 
 		public Sprite(String filePath) {

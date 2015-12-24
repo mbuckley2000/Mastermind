@@ -1,12 +1,13 @@
 /**
  * Created by matt on 23/12/2015.
  */
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-public class AIInterface implements Interface {
+public class AIInterface implements Interface, Serializable {
 	private String name;
 	private Set<PreviousGuess> previousGuesses;
 	private PreviousGuess lastGuess;
@@ -186,5 +187,9 @@ public class AIInterface implements Interface {
 	private int scoreGuess(PreviousGuess guess) {
 		int score = 2 * guess.blackPegCount() + guess.whitePegCount();
 		return(score);
+	}
+
+	public Game menu() {
+		return(null);
 	}
 }

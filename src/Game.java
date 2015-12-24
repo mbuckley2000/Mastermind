@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Created by matt on 13/12/2015.
  */
@@ -11,44 +13,42 @@
 */
 
 
-public class Game {
+public class Game implements Serializable {
 	private Board board;
 	private int numberOfColours;
 	private int numberOfPegs;
-	private Player codeMaker;
-	private Player codeBreaker;
+	private Interface codeMaker;
+	private Interface codeBreaker;
 	private int gameState;
 	private Combination code;
 	private int guessCount;
 
-	public Game(int numberOfColours, int numberOfPegs, Player codeMaker, Player codeBreaker) {
+	public Game(int numberOfColours, int numberOfPegs, Interface codeMaker, Interface codeBreaker) {
 		this.codeBreaker = codeBreaker;
 		this.codeMaker = codeMaker;
 		this.numberOfColours = numberOfColours;
 		this.numberOfPegs = numberOfPegs;
-		board = new Board(1000000);
+		board = new Board(500);
 		Peg.setNumberOfColours(numberOfColours);
 		gameState = 0;
 		guessCount = 0;
 	}
 
 	public void update() {
-		Interface codeMakerInterface = codeMaker.getInterface();
-		Interface codeBreakerInterface = codeBreaker.getInterface();
 		switch(gameState) {
 			case 0: { //Code maker is making the code
-				codeMakerInterface.clearDisplay();
-				code = codeMakerInterface.getCode(numberOfPegs);
-				codeMakerInterface.displayCode(code);
+				codeMaker.clearDisplay();
+				code = codeMaker.getCode(numberOfPegs);
+				codeMaker.displayCode(code);
 				System.out.println(code.toString());
 				gameState = 1;
 				break;
 			}
 
 			case 1: { //Code breaker is guessing
-				Combination guess = codeBreakerInterface.getGuess(numberOfPegs);
+				Combination guess = codeBreaker.getGuess(numberOfPegs);
 				board.add(guess);
-				codeMakerInterface.displayGuess(guess);
+				codeMaker.displayGuess(guess);
 				if (guess.equals(code)) {
 					//Code breaker has won
 					gameState = 3;
@@ -60,19 +60,19 @@ public class Game {
 			}
 
 			case 2: { //Code maker is giving feedback
-				Combination feedback = codeMakerInterface.getFeedback(board.peek(), code);
-				codeBreakerInterface.displayFeedback(feedback);
+				Combination feedback = codeMaker.getFeedback(board.peek(), code);
+				codeBreaker.displayFeedback(feedback);
 				gameState = 1;
 				break;
 			}
 
 			case 3: { //End of game
 				if (board.peek().equals(code)) {
-					codeMakerInterface.displayLose();
-					codeBreakerInterface.displayWin();
+					codeMaker.displayLose();
+					codeBreaker.displayWin();
 				} else {
-					codeMakerInterface.displayWin();
-					codeBreakerInterface.displayLose();
+					codeMaker.displayWin();
+					codeBreaker.displayLose();
 				}
 				System.out.println("Guesses: " + guessCount);
 				gameState = 4;
