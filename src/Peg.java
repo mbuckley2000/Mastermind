@@ -2,6 +2,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
 import java.io.File;
+import java.util.Random;
 
 /**
  * Created by matt on 11/12/2015.
@@ -60,5 +61,10 @@ public class Peg {
 
 	public static Peg[] getAvailablePegs() {
 		return(availiablePegs);
+	}
+
+	public static Peg getRandomPeg() {
+		Random rand = new Random();
+		return(availiablePegs[rand.nextInt(availiablePegs.length)]);
 	}
 }

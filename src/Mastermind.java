@@ -6,11 +6,11 @@ public class Mastermind {
 	public static void main(String[] args) {
 		//Window window = new Window(800, 600, "Mastermind");
 
-		Human codeBreaker = new Human();
+		AI codeBreaker = new AI("Bob");
 
 		AI codeMaker = new AI("Thor");
 
-		Game game = new Game(4, 4, codeMaker, codeBreaker);
+		Game game = new Game(6, 8, codeMaker, codeBreaker);
 
 		while(true) {
 			game.update();

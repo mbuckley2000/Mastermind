@@ -4,10 +4,10 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Combination extends JComponent {
-	private static int combinationCount = 0;
-	private int id;
 	private int length;
 	protected Peg[] pegs;
 
@@ -15,7 +15,6 @@ public class Combination extends JComponent {
 		if (length >= 3 && length <= 8) {
 			this.length = length;
 			pegs = new Peg[length];
-			id = combinationCount++;
 		} else {
 			System.err.println("Invalid combination length specified. Must be between 3 and 8");
 		}
@@ -24,7 +23,6 @@ public class Combination extends JComponent {
 	public Combination(Peg... pegArray) {
 		length = pegArray.length;
 		pegs = new Peg[length];
-		id = combinationCount++;
 		for (int i=0; i<pegArray.length; i++) {
 			setPeg(i, pegArray[i]);
 		}
@@ -47,7 +45,7 @@ public class Combination extends JComponent {
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		for (int i = 0; i < pegs.length; i++) {
-			g2.drawImage(pegs[i].getImage(), 10 + 55 * i, 10 + 55 * id, 50, 50, this);
+			g2.drawImage(pegs[i].getImage(), 10 + 55 * i, 10 + 55, 50, 50, this);
 		}
 		g2.finalize();
 	}
@@ -57,6 +55,17 @@ public class Combination extends JComponent {
 			if (pegs[i] == null) {
 				pegs[i] = p;
 				break;
+			}
+		}
+	}
+
+	public void addPeg(Peg p, int number) {
+		for (int n=0; n<number; n++) {
+			for (int i = 0; i < length; i++) {
+				if (pegs[i] == null) {
+					pegs[i] = p;
+					break;
+				}
 			}
 		}
 	}
@@ -90,5 +99,15 @@ public class Combination extends JComponent {
 
 	public int getLength() {
 		return(length);
+	}
+
+	public int countPegs(Peg p) {
+		int count = 0;
+		for (Peg n : pegs) {
+			if (n == p) {
+				count++;
+			}
+		}
+		return(count);
 	}
 }

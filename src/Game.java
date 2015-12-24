@@ -19,15 +19,17 @@ public class Game {
 	private Player codeBreaker;
 	private int gameState;
 	private Combination code;
+	private int guessCount;
 
 	public Game(int numberOfColours, int numberOfPegs, Player codeMaker, Player codeBreaker) {
 		this.codeBreaker = codeBreaker;
 		this.codeMaker = codeMaker;
 		this.numberOfColours = numberOfColours;
 		this.numberOfPegs = numberOfPegs;
-		board = new Board(numberOfPegs);
+		board = new Board(1000000);
 		Peg.setNumberOfColours(numberOfColours);
 		gameState = 0;
+		guessCount = 0;
 	}
 
 	public void update() {
@@ -46,7 +48,6 @@ public class Game {
 			case 1: { //Code breaker is guessing
 				Combination guess = codeBreakerInterface.getGuess(numberOfPegs);
 				board.add(guess);
-				codeBreakerInterface.displayGuess(guess);
 				codeMakerInterface.displayGuess(guess);
 				if (guess.equals(code)) {
 					//Code breaker has won
@@ -54,12 +55,12 @@ public class Game {
 				} else {
 					gameState = 2;
 				}
+				guessCount++;
 				break;
 			}
 
 			case 2: { //Code maker is giving feedback
 				Combination feedback = codeMakerInterface.getFeedback(board.peek(), code);
-				codeMakerInterface.displayFeedback(feedback);
 				codeBreakerInterface.displayFeedback(feedback);
 				gameState = 1;
 				break;
@@ -73,13 +74,14 @@ public class Game {
 					codeMakerInterface.displayWin();
 					codeBreakerInterface.displayLose();
 				}
+				System.out.println("Guesses: " + guessCount);
 				gameState = 4;
 				break;
 			}
 
 			case 4: { //Reset game
 				board.empty();
-				gameState = 0;
+				//gameState = 0;
 				break;
 			}
 			default: {
