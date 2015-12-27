@@ -43,14 +43,6 @@ public class Combination extends JComponent implements Serializable {
 		return(pegs[index]);
 	}
 
-	public void paint(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		for (int i = 0; i < pegs.length; i++) {
-			g2.drawImage(pegs[i].getImage(), 10 + 55 * i, 10 + 55, 50, 50, this);
-		}
-		g2.finalize();
-	}
-
 	public void addPeg(Peg p) {
 		for (int i=0; i<length; i++) {
 			if (pegs[i] == null) {
@@ -110,5 +102,9 @@ public class Combination extends JComponent implements Serializable {
 			}
 		}
 		return(count);
+	}
+
+	public Peg[] getPegs() {
+		return(pegs);
 	}
 }

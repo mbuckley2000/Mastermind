@@ -28,7 +28,7 @@ public class Game implements Serializable {
 		this.codeMaker = codeMaker;
 		this.numberOfColours = numberOfColours;
 		this.numberOfPegs = numberOfPegs;
-		board = new Board(500);
+		board = new Board(12);
 		Peg.setNumberOfColours(numberOfColours);
 		gameState = 0;
 		guessCount = 0;
@@ -49,11 +49,17 @@ public class Game implements Serializable {
 				Combination guess = codeBreaker.getGuess(numberOfPegs);
 				board.add(guess);
 				codeMaker.displayGuess(guess);
+				codeMaker.displayBoard(board);
+				codeBreaker.displayBoard(board);
 				if (guess.equals(code)) {
 					//Code breaker has won
 					gameState = 3;
 				} else {
 					gameState = 2;
+				}
+				if (board.isFull()) {
+					//Code maker wins!
+					gameState = 3;
 				}
 				guessCount++;
 				break;

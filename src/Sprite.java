@@ -7,19 +7,39 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class Sprite extends JComponent implements Serializable{
-		private BufferedImage image;
+	private BufferedImage image;
+	private Vector2i position;
+	private Vector2i size;
 
-		public Sprite(String filePath) {
-			try {
-				image = ImageIO.read(new File(filePath));
-			}catch (IOException e) {
-				System.err.println("Couldn't load image");
-			}
+	public Sprite(String filePath) {
+		super();
+		try {
+			image = ImageIO.read(new File(filePath));
+		}catch (IOException e) {
+			System.err.println("Couldn't load sprite image: " + filePath);
 		}
-
-		public void paint(Graphics g) {
-			Graphics2D g2 = (Graphics2D) g;
-			g2.drawImage(image, 0, 0, this);
-			g2.finalize();
-		}
+		position = new Vector2i(0, 0);
+		size = new Vector2i(image.getWidth(), image.getHeight());
+		setBounds(0, 0, size.x, size.y);
 	}
+
+	public void setPosition(int x, int y) {
+		position.x = x;
+		position.y = y;
+	}
+
+	public void setSize(int x, int y) {
+		size.x = x;
+		size.y = y;
+	}
+
+	public Vector2i getPosition() {
+		return(position);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(image, position.x, position.y, size.x, size.y, this);
+	}
+}

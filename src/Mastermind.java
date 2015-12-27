@@ -22,7 +22,7 @@ public class Mastermind {
 
 		Interface menuInterface = null;
 		if (guiMode) {
-			menuInterface = new GraphicalInterface();
+			menuInterface = new GraphicalInterface(600, 800, "Mastermind");
 		} else {
 			menuInterface= new TextualInterface();
 		}
@@ -31,6 +31,7 @@ public class Mastermind {
 
 		while(true) {
 			game.update();
+
 			/*
 			Runtime.getRuntime().addShutdownHook(new Thread() { //This code runs on shutdown
 				public void run() {
@@ -95,7 +96,7 @@ public class Mastermind {
 
 		Interface codeBreaker = new AIInterface("Bob");
 
-		Interface codeMaker = new AIInterface("Thor");
+		Interface codeMaker = new GraphicalInterface(600, 800, "Mastermind");
 
 		Game game = new Game(numberOfColours, numberOfPegs, codeMaker, codeBreaker);
 

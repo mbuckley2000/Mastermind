@@ -12,21 +12,16 @@ public class Board implements Serializable{
 		this.length = length;
 	}
 
-	public void draw(Window window) {
-		//window.getContentPane().add(woodTexture);
-		//window.setVisible(true);
-		for (int i = 0; i < stack.size(); i++) {
-			window.getContentPane().add(stack.get(i));
-			window.setVisible(true);
-		}
-	}
-
 	public void add(Combination c) {
 		if (stack.size() < length) {
 			stack.add(c);
 		} else {
 			System.err.println("Board is full");
 		}
+	}
+
+	public boolean isFull() {
+		return(stack.size() == length);
 	}
 
 	public int getMaxLength() {

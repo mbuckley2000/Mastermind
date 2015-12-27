@@ -8,10 +8,11 @@ import java.util.Random;
 /**
  * Created by matt on 11/12/2015.
  */
+
 public class Peg implements Serializable{
-	private BufferedImage image;
 	private String colour;
-	private static int numberOfColours;
+	private static Peg[] availiablePegs;
+	private String spriteFilePath;
 
 	private static Peg[] allPegs = {
 			new Peg("Red", "images/red.png"),
@@ -26,20 +27,11 @@ public class Peg implements Serializable{
 			new Peg("White", "images/white.png")
 	};
 
-	private static Peg[] availiablePegs;
-
-	public Peg(String colour, String pegImageFilePath) {
-		try {
-			image = ImageIO.read(new File(pegImageFilePath));
-		} catch(Exception e) {
-			System.err.println("Unable to locate file: " + pegImageFilePath);
-		}
+	public Peg(String colour, String spriteFilePath) {
 		this.colour = colour;
+		this.spriteFilePath = spriteFilePath;
 	}
 
-	public Image getImage() {
-		return(image);
-	}
 
 	public String toString() {
 		return(colour);
@@ -55,7 +47,6 @@ public class Peg implements Serializable{
 	}
 
 	public static void setNumberOfColours(int numberOfColours) {
-		Peg.numberOfColours = numberOfColours;
 		availiablePegs = new Peg[numberOfColours];
 		for (int i=0; i<numberOfColours; i++) {
 			availiablePegs[i] = allPegs[i];
@@ -70,5 +61,9 @@ public class Peg implements Serializable{
 	public static Peg getRandomPeg() {
 		Random rand = new Random();
 		return(availiablePegs[rand.nextInt(availiablePegs.length)]);
+	}
+
+	public String getSpriteFilePath() {
+		return(spriteFilePath);
 	}
 }
