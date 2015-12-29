@@ -1,19 +1,14 @@
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
-import java.io.File;
-import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
  * Created by matt on 11/12/2015.
  */
 
-public class Peg implements Serializable{
-	private String colour;
+public class Peg {
+	private byte id;
+	private static byte idCounter;
 	private static Peg[] availiablePegs;
-	private String spriteFilePath;
-
 	private static Peg[] allPegs = {
 			new Peg("Red", "images/red.png"),
 			new Peg("Blue", "images/blue.png"),
@@ -24,46 +19,62 @@ public class Peg implements Serializable{
 			new Peg("Pink", "images/pink.png"),
 			new Peg("Gold", "images/gold.png"),
 			new Peg("Black", "images/black.png"),
-			new Peg("White", "images/white.png")
+			new Peg("White", "images/white.png"),
+			new Peg("Empty", "images/empty.png")
 	};
+	private String colour;
+	private String spriteFilePath;
 
 	public Peg(String colour, String spriteFilePath) {
+		this.id = idCounter++;
 		this.colour = colour;
 		this.spriteFilePath = spriteFilePath;
-	}
-
-
-	public String toString() {
-		return(colour);
 	}
 
 	public static Peg getPeg(String name) {
 		for (Peg p : allPegs) {
 			if (name.toLowerCase().equals(p.toString().toLowerCase())) {
-				return(p);
+				return (p);
 			}
 		}
-		return(null);
+		return (null);
+	}
+
+	public static Peg getPeg(byte id) {
+		for (Peg p : allPegs) {
+			if (id == p.getID()) {
+				return (p);
+			}
+		}
+		return (null);
 	}
 
 	public static void setNumberOfColours(int numberOfColours) {
 		availiablePegs = new Peg[numberOfColours];
-		for (int i=0; i<numberOfColours; i++) {
+		for (int i = 0; i < numberOfColours; i++) {
 			availiablePegs[i] = allPegs[i];
 		}
 
 	}
 
 	public static Peg[] getAvailablePegs() {
-		return(availiablePegs);
+		return (availiablePegs);
 	}
 
 	public static Peg getRandomPeg() {
 		Random rand = new Random();
-		return(availiablePegs[rand.nextInt(availiablePegs.length)]);
+		return (availiablePegs[rand.nextInt(availiablePegs.length)]);
+	}
+
+	public String toString() {
+		return (colour);
 	}
 
 	public String getSpriteFilePath() {
-		return(spriteFilePath);
+		return (spriteFilePath);
+	}
+
+	public byte getID() {
+		return(id);
 	}
 }

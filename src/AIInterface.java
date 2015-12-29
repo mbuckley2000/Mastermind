@@ -1,28 +1,31 @@
 /**
  * Created by matt on 23/12/2015.
  */
-import java.io.Serializable;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-public class AIInterface implements Interface, Serializable {
+public class AIInterface implements Interface {
 	private String name;
 	private Set<PreviousGuess> previousGuesses;
 	private PreviousGuess lastGuess;
+	private static final String type = "AI";
+	private byte[][] possibleCombinations;
 
 	public AIInterface(String name) {
 		this.name = name;
-		previousGuesses = new HashSet<PreviousGuess>();
+		previousGuesses = new HashSet<>();
 		lastGuess = new PreviousGuess(null);
 	}
 
 	public Combination getGuess(int length) {
 		Combination guess = new Combination(length);
 		if (previousGuesses.isEmpty()) {
-			guess.addPeg(Peg.getRandomPeg(), length / 2);
-			guess.addPeg(Peg.getRandomPeg(), length / 2);
+			for (int i = 0; i < guess.getLength(); i++) {
+				guess.setPeg(i, Peg.getRandomPeg());
+			}
 		} else {
 			Iterator<PreviousGuess> iterator = previousGuesses.iterator();
 			int highestScore = 0;
@@ -34,19 +37,23 @@ public class AIInterface implements Interface, Serializable {
 					bestGuess = g;
 				}
 			}
-				int blackPegs = bestGuess.blackPegCount();
-				int whitePegs = bestGuess.whitePegCount();
-				guess = adjustGuess(bestGuess.getGuess(), blackPegs, whitePegs);
+			int blackPegs = bestGuess.blackPegCount();
+			int whitePegs = bestGuess.whitePegCount();
+			guess = adjustGuess(bestGuess.getGuess(), blackPegs, whitePegs);
 		}
 		lastGuess = new PreviousGuess(guess);
 		previousGuesses.add(lastGuess);
 		say(guess.toString());
-		return(guess);
+		return (guess);
 	}
 
 	public Combination getCode(int length) {
 		//Generate Random Code
-		return(randomCombination(length));
+		return (randomCombination(length));
+	}
+
+	public String getName() {
+		return(name);
 	}
 
 	public Combination getFeedback(Combination guess, Combination code) {
@@ -76,17 +83,17 @@ public class AIInterface implements Interface, Serializable {
 			}
 
 			Combination feedback = new Combination(guess.getLength());
-			for (int i=0; i<blackCounter; i++) {
+			for (int i = 0; i < blackCounter; i++) {
 				feedback.addPeg(Peg.getPeg("Black"));
 			}
-			for (int i=0; i<whiteCounter; i++) {
+			for (int i = 0; i < whiteCounter; i++) {
 				feedback.addPeg(Peg.getPeg("White"));
 			}
 			say(feedback.toString());
-			return(feedback);
+			return (feedback);
 
 		} else {
-			return(null);
+			return (null);
 			//Different lengths
 		}
 	}
@@ -112,7 +119,8 @@ public class AIInterface implements Interface, Serializable {
 	public void displayBoard(Board board) {
 	}
 
-	public void clearDisplay() {}
+	public void clearDisplay() {
+	}
 
 	private void say(String message) {
 		System.out.println(name + ": " + message);
@@ -122,10 +130,10 @@ public class AIInterface implements Interface, Serializable {
 		Peg[] availiablePegs = Peg.getAvailablePegs();
 		Random rand = new Random();
 		Combination combination = new Combination(length);
-		for (int i=0; i<length; i++) {
+		for (int i = 0; i < length; i++) {
 			combination.setPeg(i, availiablePegs[rand.nextInt(availiablePegs.length)]);
 		}
-		return(combination);
+		return (combination);
 	}
 
 	private Combination adjustGuess(Combination previousGuess, int blackPegs, int whitePegs) {
@@ -133,12 +141,12 @@ public class AIInterface implements Interface, Serializable {
 		Random rand = new Random();
 		int indexA = 0;
 		int indexB = 0;
-		int loopLimit=0;
+		int loopLimit = 0;
 		Boolean[] ignoreList = new Boolean[previousGuess.getLength()];
-		for (int i=0; i<blackPegs; i++) {
+		for (int i = 0; i < blackPegs; i++) {
 			do {
 				loopLimit++;
-				if (loopLimit>50) {
+				if (loopLimit > 50) {
 					loopLimit = 0;
 					break;
 				}
@@ -147,10 +155,10 @@ public class AIInterface implements Interface, Serializable {
 			ignoreList[indexA] = true;
 			newGuess.setPeg(indexA, previousGuess.getPeg(indexA));
 		}
-		for (int i=0; i<whitePegs; i++) {
+		for (int i = 0; i < whitePegs; i++) {
 			do {
 				loopLimit++;
-				if (loopLimit>50) {
+				if (loopLimit > 50) {
 					loopLimit = 0;
 					break;
 				}
@@ -159,7 +167,7 @@ public class AIInterface implements Interface, Serializable {
 			ignoreList[indexA] = true;
 			do {
 				loopLimit++;
-				if (loopLimit>50) {
+				if (loopLimit > 50) {
 					loopLimit = 0;
 					break;
 				}
@@ -169,10 +177,10 @@ public class AIInterface implements Interface, Serializable {
 			newGuess.setPeg(indexB, previousGuess.getPeg(indexA));
 			newGuess.setPeg(indexA, previousGuess.getPeg(indexB));
 		}
-		for (int i=0; i<previousGuess.getLength()-blackPegs-whitePegs; i++) {
+		for (int i = 0; i < previousGuess.getLength() - blackPegs - whitePegs; i++) {
 			do {
 				loopLimit++;
-				if (loopLimit>50) {
+				if (loopLimit > 50) {
 					loopLimit = 0;
 					break;
 				}
@@ -181,15 +189,23 @@ public class AIInterface implements Interface, Serializable {
 			ignoreList[indexA] = true;
 			newGuess.setPeg(indexA, Peg.getRandomPeg());
 		}
-		return(newGuess);
+		return (newGuess);
 	}
 
 	private int scoreGuess(PreviousGuess guess) {
 		int score = 2 * guess.blackPegCount() + guess.whitePegCount();
-		return(score);
+		return (score);
+	}
+
+	public String getPlayerType() {
+		return(type);
+	}
+
+	private void fillPossibleCombinations(int numberOfPegs, int numberOfColours) {
+		possibleCombinations = new byte[(int)Math.pow(numberOfPegs, numberOfColours)][numberOfPegs];
 	}
 
 	public Game menu() {
-		return(null);
+		return (null);
 	}
 }

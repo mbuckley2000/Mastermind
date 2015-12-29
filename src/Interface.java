@@ -3,14 +3,28 @@
  */
 public interface Interface {
 	Combination getGuess(int length);
+
 	Combination getFeedback(Combination guess, Combination code);
+
 	Combination getCode(int length);
+
 	void displayGuess(Combination combination);
+
 	void displayCode(Combination code);
+
 	void displayFeedback(Combination feedback);
+
 	void clearDisplay();
+
 	void displayBoard(Board board);
+
 	void displayWin();
+
 	void displayLose();
+
+	String getName();
+
+	String getPlayerType();
+
 	Game menu();
 }

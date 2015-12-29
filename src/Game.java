@@ -1,5 +1,3 @@
-import java.io.Serializable;
-
 /**
  * Created by matt on 13/12/2015.
  */
@@ -13,7 +11,7 @@ import java.io.Serializable;
 */
 
 
-public class Game implements Serializable {
+public class Game {
 	private Board board;
 	private int numberOfColours;
 	private int numberOfPegs;
@@ -35,7 +33,7 @@ public class Game implements Serializable {
 	}
 
 	public void update() {
-		switch(gameState) {
+		switch (gameState) {
 			case 0: { //Code maker is making the code
 				codeMaker.clearDisplay();
 				code = codeMaker.getCode(numberOfPegs);
@@ -47,7 +45,7 @@ public class Game implements Serializable {
 
 			case 1: { //Code breaker is guessing
 				Combination guess = codeBreaker.getGuess(numberOfPegs);
-				board.add(guess);
+				board.add(new PreviousGuess(guess));
 				codeMaker.displayGuess(guess);
 				codeMaker.displayBoard(board);
 				codeBreaker.displayBoard(board);
@@ -66,7 +64,9 @@ public class Game implements Serializable {
 			}
 
 			case 2: { //Code maker is giving feedback
-				Combination feedback = codeMaker.getFeedback(board.peek(), code);
+				Combination feedback = codeMaker.getFeedback(board.peek().getGuess(), code);
+				System.out.println("Feedback:" + feedback.getPegs().length);
+				board.peek().setFeedback(feedback);
 				codeBreaker.displayFeedback(feedback);
 				gameState = 1;
 				break;
@@ -99,6 +99,6 @@ public class Game implements Serializable {
 	}
 
 	public Combination getCode() {
-		return(code);
+		return (code);
 	}
 }

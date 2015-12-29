@@ -1,18 +1,17 @@
-import java.io.Serializable;
 import java.util.Stack;
 
 /**
  * Created by matt on 13/12/2015.
  */
-public class Board implements Serializable{
-	private Stack<Combination> stack = new Stack<Combination>();
+public class Board {
+	private Stack<PreviousGuess> stack = new Stack<PreviousGuess>();
 	private int length;
 
 	public Board(int length) {
 		this.length = length;
 	}
 
-	public void add(Combination c) {
+	public void add(PreviousGuess c) {
 		if (stack.size() < length) {
 			stack.add(c);
 		} else {
@@ -21,32 +20,32 @@ public class Board implements Serializable{
 	}
 
 	public boolean isFull() {
-		return(stack.size() == length);
+		return (stack.size() == length);
 	}
 
 	public int getMaxLength() {
-		return(length);
+		return (length);
 	}
 
 	public int getCurrentLength() {
-		return(stack.size());
+		return (stack.size());
 	}
 
-	public Combination peek() {
+	public PreviousGuess peek() {
 		if (!stack.isEmpty()) {
 			return (stack.peek());
 		} else {
 			System.err.println("Board is empty");
-			return(null);
+			return (null);
 		}
 	}
 
-	public Combination getCombination(int index) {
+	public PreviousGuess getCombination(int index) {
 		if (index < stack.size()) {
 			return (stack.get(index));
 		} else {
 			System.err.println("Board out of bounds. Combination doesn't exist");
-			return(null);
+			return (null);
 		}
 	}
 

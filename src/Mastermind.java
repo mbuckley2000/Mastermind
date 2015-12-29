@@ -2,13 +2,8 @@
  * Created by matt on 11/12/2015.
  */
 
+import java.io.*;
 import java.util.Scanner;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 public class Mastermind {
 	public static void main(String[] args) {
@@ -22,14 +17,14 @@ public class Mastermind {
 
 		Interface menuInterface = null;
 		if (guiMode) {
-			menuInterface = new GraphicalInterface(600, 800, "Mastermind");
+			menuInterface = new GraphicalInterface(0, 0, "Mastermind");
 		} else {
-			menuInterface= new TextualInterface();
+			menuInterface = new TextualInterface();
 		}
 
 		Game game = menuInterface.menu();
 
-		while(true) {
+		while (true) {
 			game.update();
 
 			/*
@@ -60,9 +55,9 @@ public class Mastermind {
 		try {
 			FileInputStream fis = new FileInputStream(filename + ".mastermind");
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			Game game = (Game)ois.readObject();
+			Game game = (Game) ois.readObject();
 			ois.close();
-			return(game);
+			return (game);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -70,7 +65,7 @@ public class Mastermind {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return(null);
+		return (null);
 	}
 
 	public static Game newGame() {
@@ -96,10 +91,10 @@ public class Mastermind {
 
 		Interface codeBreaker = new AIInterface("Bob");
 
-		Interface codeMaker = new GraphicalInterface(600, 800, "Mastermind");
+		Interface codeMaker = new GraphicalInterface(numberOfPegs, 10, "Mastermind");
 
 		Game game = new Game(numberOfColours, numberOfPegs, codeMaker, codeBreaker);
 
-		return(game);
+		return (game);
 	}
 }

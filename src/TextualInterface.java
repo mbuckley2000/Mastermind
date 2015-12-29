@@ -2,11 +2,13 @@
  * Created by matt on 22/12/2015.
  */
 
-import java.io.Serializable;
 import java.util.Scanner;
 
-public class TextualInterface implements Interface, Serializable {
+public class TextualInterface implements Interface {
 	private Scanner input;
+	private String name;
+	private static final String type = "Textual";
+
 
 	public TextualInterface() {
 		input = new Scanner(System.in);
@@ -14,18 +16,27 @@ public class TextualInterface implements Interface, Serializable {
 
 	public Combination getGuess(int length) {
 		System.out.println("Please enter your guess:");
-		return(getCombination(length));
+		return (getCombination(length));
 	}
 
 	public Combination getCode(int length) {
 		System.out.println("Please enter your code:");
-		return(getCombination(length));
+		return (getCombination(length));
+	}
+
+	public String getPlayerType() {
+		return(type);
 	}
 
 	public Combination getFeedback(Combination guess, Combination code) {
 		System.out.println("Please enter your feedback:");
 		Combination feedback = new Combination(guess.getLength());
-		return(getCombination(guess.getLength()));
+		return (getCombination(guess.getLength()));
+	}
+
+
+	public String getName() {
+		return(name);
 	}
 
 	public void displayGuess(Combination guess) {
@@ -49,7 +60,7 @@ public class TextualInterface implements Interface, Serializable {
 	}
 
 	public void displayBoard(Board board) {
-		for (int i=0; i<board.getMaxLength(); i++) {
+		for (int i = 0; i < board.getMaxLength(); i++) {
 			if (i < board.getCurrentLength()) {
 				System.out.println(board.getCombination(i).toString());
 			} else {
@@ -61,7 +72,7 @@ public class TextualInterface implements Interface, Serializable {
 	public void clearDisplay() {
 		try {
 			Runtime.getRuntime().exec("clear");
-		} catch(java.io.IOException e) {
+		} catch (java.io.IOException e) {
 
 		}
 	}
@@ -70,7 +81,7 @@ public class TextualInterface implements Interface, Serializable {
 		Combination combination = new Combination(length);
 		String colour;
 		Peg peg;
-		for (int i=0; i<length; i++) {
+		for (int i = 0; i < length; i++) {
 			//Get color as input
 			colour = input.next();
 			peg = Peg.getPeg(colour);
@@ -81,7 +92,7 @@ public class TextualInterface implements Interface, Serializable {
 				System.err.println("Invalid peg colour: " + colour);
 			}
 		}
-		return(combination);
+		return (combination);
 	}
 
 	public Game menu() {
@@ -103,6 +114,6 @@ public class TextualInterface implements Interface, Serializable {
 				game = Mastermind.newGame();
 			}
 		} while (!lastString.contains("load") && !lastString.contains("new"));
-		return(game);
+		return (game);
 	}
 }

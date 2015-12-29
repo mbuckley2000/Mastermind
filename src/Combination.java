@@ -2,15 +2,9 @@
  * Created by matt on 11/12/2015.
  */
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-public class Combination extends JComponent implements Serializable {
-	private int length;
+public class Combination {
 	protected Peg[] pegs;
+	private int length;
 
 	public Combination(int length) {
 		if (length >= 3 && length <= 8) {
@@ -24,27 +18,35 @@ public class Combination extends JComponent implements Serializable {
 	public Combination(Peg... pegArray) {
 		length = pegArray.length;
 		pegs = new Peg[length];
-		for (int i=0; i<pegArray.length; i++) {
+		for (int i = 0; i < pegArray.length; i++) {
 			setPeg(i, pegArray[i]);
+		}
+	}
+
+	public Combination(byte[] idArray) {
+		length = idArray.length;
+		pegs = new Peg[length];
+		for (int i = 0; i < length; i++) {
+			setPeg(i, getPeg(idArray[i]));
 		}
 	}
 
 	public Boolean setPeg(int index, Peg peg) {
 		if (index < length && index >= 0) {
 			pegs[index] = peg;
-			return(true);
+			return (true);
 		} else {
 			System.err.println("Invalid peg index specified");
-			return(false);
+			return (false);
 		}
 	}
 
 	public Peg getPeg(int index) {
-		return(pegs[index]);
+		return (pegs[index]);
 	}
 
 	public void addPeg(Peg p) {
-		for (int i=0; i<length; i++) {
+		for (int i = 0; i < length; i++) {
 			if (pegs[i] == null) {
 				pegs[i] = p;
 				break;
@@ -53,7 +55,7 @@ public class Combination extends JComponent implements Serializable {
 	}
 
 	public void addPeg(Peg p, int number) {
-		for (int n=0; n<number; n++) {
+		for (int n = 0; n < number; n++) {
 			for (int i = 0; i < length; i++) {
 				if (pegs[i] == null) {
 					pegs[i] = p;
@@ -64,22 +66,22 @@ public class Combination extends JComponent implements Serializable {
 	}
 
 	public Boolean equals(Combination c) {
-		if(c.length == length) {
+		if (c.length == length) {
 			Boolean equal = true;
-			for (int i=0; i<length; i++) {
+			for (int i = 0; i < length; i++) {
 				if (c.getPeg(i) != pegs[i]) {
 					equal = false;
 				}
 			}
-			return(equal);
+			return (equal);
 		} else {
-			return(false);
+			return (false);
 		}
 	}
 
 	public String toString() {
 		String output = "";
-		for (int i=0; i<length; i++) {
+		for (int i = 0; i < length; i++) {
 			try {
 				output = output + " " + pegs[i].toString();
 			} catch (java.lang.NullPointerException e) {
@@ -87,11 +89,11 @@ public class Combination extends JComponent implements Serializable {
 				output = output + " Empty";
 			}
 		}
-		return(output);
+		return (output);
 	}
 
 	public int getLength() {
-		return(length);
+		return (length);
 	}
 
 	public int countPegs(Peg p) {
@@ -101,10 +103,18 @@ public class Combination extends JComponent implements Serializable {
 				count++;
 			}
 		}
-		return(count);
+		return (count);
 	}
 
 	public Peg[] getPegs() {
-		return(pegs);
+		return (pegs);
+	}
+
+	public byte[] toIDArray() {
+		byte[] array = new byte[length];
+		for (int i=0; i<length; i++) {
+			array[i] = pegs[i].getID();
+		}
+		return (array);
 	}
 }

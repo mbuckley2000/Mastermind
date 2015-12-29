@@ -4,9 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 
-public class Sprite extends JComponent implements Serializable{
+public class Sprite extends JComponent {
 	private BufferedImage image;
 	private Vector2i position;
 	private Vector2i size;
@@ -15,12 +14,12 @@ public class Sprite extends JComponent implements Serializable{
 		super();
 		try {
 			image = ImageIO.read(new File(filePath));
-		}catch (IOException e) {
+		} catch (IOException e) {
 			System.err.println("Couldn't load sprite image: " + filePath);
 		}
 		position = new Vector2i(0, 0);
 		size = new Vector2i(image.getWidth(), image.getHeight());
-		setBounds(0, 0, size.x, size.y);
+		setBounds(0, 0, 600, 700);
 	}
 
 	public void setPosition(int x, int y) {
@@ -34,7 +33,7 @@ public class Sprite extends JComponent implements Serializable{
 	}
 
 	public Vector2i getPosition() {
-		return(position);
+		return (position);
 	}
 
 	@Override
