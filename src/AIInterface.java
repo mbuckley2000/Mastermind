@@ -2,210 +2,169 @@
  * Created by matt on 23/12/2015.
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class AIInterface implements Interface {
-	private String name;
-	private Set<PreviousGuess> previousGuesses;
-	private PreviousGuess lastGuess;
-	private static final String type = "AI";
-	private byte[][] possibleCombinations;
+    private static final String type = "AI";
+    private String name;
+    private PreviousGuess lastGuess;
+    private Set<byte[]> possibleCombinations;
+    private byte[] lastGuessID;
 
-	public AIInterface(String name) {
-		this.name = name;
-		previousGuesses = new HashSet<>();
-		lastGuess = new PreviousGuess(null);
-	}
+    public AIInterface(String name, int numberOfColours, int numberOfPegs) {
+        this.name = name;
+        lastGuess = new PreviousGuess(null);
+        possibleCombinations = new HashSet();
+        fillPossibleCombinations(new byte[numberOfPegs], numberOfColours, numberOfPegs);
+    }
 
-	public Combination getGuess(int length) {
-		Combination guess = new Combination(length);
-		if (previousGuesses.isEmpty()) {
-			for (int i = 0; i < guess.getLength(); i++) {
-				guess.setPeg(i, Peg.getRandomPeg());
-			}
-		} else {
-			Iterator<PreviousGuess> iterator = previousGuesses.iterator();
-			int highestScore = 0;
-			PreviousGuess bestGuess = iterator.next();
-			while (iterator.hasNext()) {
-				PreviousGuess g = iterator.next();
-				if (scoreGuess(g) > highestScore) {
-					highestScore = scoreGuess(g);
-					bestGuess = g;
-				}
-			}
-			int blackPegs = bestGuess.blackPegCount();
-			int whitePegs = bestGuess.whitePegCount();
-			guess = adjustGuess(bestGuess.getGuess(), blackPegs, whitePegs);
-		}
-		lastGuess = new PreviousGuess(guess);
-		previousGuesses.add(lastGuess);
-		say(guess.toString());
-		return (guess);
-	}
+    public Combination getGuess(int length) {
+        lastGuessID = possibleCombinations.iterator().next();
+        lastGuess = new PreviousGuess(new Combination(lastGuessID));
+        System.err.println("Remaining Possible Combinations: " + possibleCombinations.size());
+        return (lastGuess.getGuess());
+    }
 
-	public Combination getCode(int length) {
-		//Generate Random Code
-		return (randomCombination(length));
-	}
+    public Combination getCode(int length) {
+        //Generate Random Code
+        return (randomCombination(length));
+    }
 
-	public String getName() {
-		return(name);
-	}
+    public String getName() {
+        return (name);
+    }
 
-	public Combination getFeedback(Combination guess, Combination code) {
-		if (guess.getLength() == code.getLength()) {
-			int blackCounter = 0;
-			int whiteCounter = 0;
-			Boolean[] codeIgnore = new Boolean[code.getLength()];
-			Boolean[] guessIgnore = new Boolean[guess.getLength()];
+    public Combination getFeedback(Combination guess, Combination code) {
+        if (guess.getLength() == code.getLength()) {
+            int blackCounter = 0;
+            int whiteCounter = 0;
+            Boolean[] ignore = new Boolean[code.getLength()];
 
-			for (int i = 0; i < guess.getLength(); i++) {
-				if (guess.getPeg(i) == code.getPeg(i)) {
-					codeIgnore[i] = true;
-					guessIgnore[i] = true;
-					blackCounter++;
-				}
-			}
+            for (int i = 0; i < guess.getLength(); i++) {
+                if (guess.getPeg(i) == code.getPeg(i)) {
+                    ignore[i] = true;
+                    blackCounter++;
+                }
+            }
 
-			for (int i = 0; i < guess.getLength(); i++) {
-				for (int j = 0; j < code.getLength(); j++) {
-					if (guess.getPeg(i) == code.getPeg(j) && codeIgnore[j] == null && guessIgnore[i] == null) {
-						whiteCounter++;
-						codeIgnore[j] = true;
-						guessIgnore[i] = true;
-						break;
-					}
-				}
-			}
+            for (int i = 0; i < guess.getLength(); i++) {
+                for (int j = 0; j < code.getLength(); j++) {
+                    if (guess.getPeg(i) == code.getPeg(j) && ignore[j] == null) {
+                        ignore[j] = true;
+                        whiteCounter++;
+                        break;
+                    }
+                }
+            }
 
-			Combination feedback = new Combination(guess.getLength());
-			for (int i = 0; i < blackCounter; i++) {
-				feedback.addPeg(Peg.getPeg("Black"));
-			}
-			for (int i = 0; i < whiteCounter; i++) {
-				feedback.addPeg(Peg.getPeg("White"));
-			}
-			say(feedback.toString());
-			return (feedback);
+            Combination feedback = new Combination(guess.getLength());
+            feedback.addPeg(Peg.black, blackCounter);
+            feedback.addPeg(Peg.white, whiteCounter);
 
-		} else {
-			return (null);
-			//Different lengths
-		}
-	}
+            return (feedback);
+        } else {
+            System.err.println("Guess and code are different lengths. Cannot generate feedback");
+            return (null);
+        }
+    }
 
-	public void displayGuess(Combination guess) {
-	}
+    public byte[] getFeedback(byte[] guess, byte[] code) {
+        if (guess.length == code.length) {
+            byte blackCounter = 0;
+            byte whiteCounter = 0;
+            Boolean[] ignore = new Boolean[code.length];
 
-	public void displayCode(Combination code) {
-	}
+            for (int i = 0; i < guess.length; i++) {
+                if (guess[i] == code[i]) {
+                    ignore[i] = true;
+                    blackCounter++;
+                }
+            }
 
-	public void displayFeedback(Combination feedback) {
-		lastGuess.setFeedback(feedback);
-	}
+            for (int i = 0; i < guess.length; i++) {
+                for (int j = 0; j < code.length; j++) {
+                    if (guess[i] == code[i] && ignore[j] == null) {
+                        ignore[j] = true;
+                        whiteCounter++;
+                        break;
+                    }
+                }
+            }
 
-	public void displayWin() {
-		say("I'm growing tired of playing fools...");
-	}
+            return (new byte[] {blackCounter, whiteCounter});
+        } else {
+            System.err.println("Guess and code are different lengths. Cannot generate feedback");
+            return (null);
+        }
+    }
 
-	public void displayLose() {
-		say("You have defeated me this time...");
-	}
+    public void displayGuess(Combination guess) {
+    }
 
-	public void displayBoard(Board board) {
-	}
+    public void displayCode(Combination code) {
+    }
 
-	public void clearDisplay() {
-	}
+    public void displayFeedback(Combination feedback) {
+        lastGuess.setFeedback(feedback);
+        if (feedback.countPegs(Peg.getPeg("Black")) != 0 || feedback.countPegs(Peg.getPeg("white")) != 0 ) {
+            int i = 0;
+            while (possibleCombinations.iterator().hasNext()) {
+                byte[] ba = possibleCombinations.iterator().next();
+                if (getFeedback(ba, lastGuessID)[0] != lastGuess.getFeedback().countPegs(Peg.getPeg("Black")) || getFeedback(ba, lastGuessID)[1] != lastGuess.getFeedback().countPegs(Peg.getPeg("White"))) {
+                    possibleCombinations.remove(ba);
+                }
+                if (i++ > possibleCombinations.size()) {
+                    break;
+                }
+            }
+        }
+        possibleCombinations.remove(lastGuessID);
+    }
 
-	private void say(String message) {
-		System.out.println(name + ": " + message);
-	}
+    public void displayWin() {
+        say("I'm growing tired of playing fools...");
+    }
 
-	private Combination randomCombination(int length) {
-		Peg[] availiablePegs = Peg.getAvailablePegs();
-		Random rand = new Random();
-		Combination combination = new Combination(length);
-		for (int i = 0; i < length; i++) {
-			combination.setPeg(i, availiablePegs[rand.nextInt(availiablePegs.length)]);
-		}
-		return (combination);
-	}
+    public void displayLose() {
+        say("You have defeated me this time...");
+    }
 
-	private Combination adjustGuess(Combination previousGuess, int blackPegs, int whitePegs) {
-		Combination newGuess = new Combination(previousGuess.getLength());
-		Random rand = new Random();
-		int indexA = 0;
-		int indexB = 0;
-		int loopLimit = 0;
-		Boolean[] ignoreList = new Boolean[previousGuess.getLength()];
-		for (int i = 0; i < blackPegs; i++) {
-			do {
-				loopLimit++;
-				if (loopLimit > 50) {
-					loopLimit = 0;
-					break;
-				}
-				indexA = rand.nextInt(previousGuess.getLength());
-			} while (ignoreList[indexA] != null);
-			ignoreList[indexA] = true;
-			newGuess.setPeg(indexA, previousGuess.getPeg(indexA));
-		}
-		for (int i = 0; i < whitePegs; i++) {
-			do {
-				loopLimit++;
-				if (loopLimit > 50) {
-					loopLimit = 0;
-					break;
-				}
-				indexA = rand.nextInt(previousGuess.getLength());
-			} while (ignoreList[indexA] != null);
-			ignoreList[indexA] = true;
-			do {
-				loopLimit++;
-				if (loopLimit > 50) {
-					loopLimit = 0;
-					break;
-				}
-				indexB = rand.nextInt(previousGuess.getLength());
-			} while (ignoreList[indexB] != null);
-			ignoreList[indexB] = true;
-			newGuess.setPeg(indexB, previousGuess.getPeg(indexA));
-			newGuess.setPeg(indexA, previousGuess.getPeg(indexB));
-		}
-		for (int i = 0; i < previousGuess.getLength() - blackPegs - whitePegs; i++) {
-			do {
-				loopLimit++;
-				if (loopLimit > 50) {
-					loopLimit = 0;
-					break;
-				}
-				indexA = rand.nextInt(previousGuess.getLength());
-			} while (ignoreList[indexA] != null);
-			ignoreList[indexA] = true;
-			newGuess.setPeg(indexA, Peg.getRandomPeg());
-		}
-		return (newGuess);
-	}
+    public void displayBoard(Board board) {
+    }
 
-	private int scoreGuess(PreviousGuess guess) {
-		int score = 2 * guess.blackPegCount() + guess.whitePegCount();
-		return (score);
-	}
+    public void clearDisplay() {
+    }
 
-	public String getPlayerType() {
-		return(type);
-	}
+    private void say (String message) {
+        System.out.println(name + ": " + message);
+    }
 
-	private void fillPossibleCombinations(int numberOfPegs, int numberOfColours) {
-		possibleCombinations = new byte[(int)Math.pow(numberOfPegs, numberOfColours)][numberOfPegs];
-	}
+    private Combination randomCombination(int length) {
+        Peg[] availiablePegs = Peg.getAvailablePegs();
+        Random rand = new Random();
+        Combination combination = new Combination(length);
+        for (int i = 0; i < length; i++) {
+            combination.setPeg(i, availiablePegs[rand.nextInt(availiablePegs.length)]);
+        }
+        return (combination);
+    }
 
-	public Game menu() {
-		return (null);
-	}
+    public String getPlayerType() {
+        return (type);
+    }
+
+    private void fillPossibleCombinations(byte[] current, int numberOfColours, int numberOfPegs){
+        if (numberOfPegs == 0) {
+            possibleCombinations.add(Arrays.copyOf(current, current.length));
+        } else {
+            for (byte i=0; i<numberOfColours; i++) {
+                current[numberOfPegs - 1] = i;
+                fillPossibleCombinations(current, numberOfColours, numberOfPegs - 1);
+            }
+        }
+    }
+
+    public Game menu() {
+        return (null);
+    }
 }

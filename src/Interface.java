@@ -2,29 +2,29 @@
  * Created by matt on 22/12/2015.
  */
 public interface Interface {
-	Combination getGuess(int length);
+    Combination getGuess(int length);
 
-	Combination getFeedback(Combination guess, Combination code);
+    Combination getFeedback(Combination guess, Combination code);
 
-	Combination getCode(int length);
+    Combination getCode(int length);
 
-	void displayGuess(Combination combination);
+    void displayGuess(Combination combination);
 
-	void displayCode(Combination code);
+    void displayCode(Combination code);
 
-	void displayFeedback(Combination feedback);
+    void displayFeedback(Combination feedback);
 
-	void clearDisplay();
+    void clearDisplay();
 
-	void displayBoard(Board board);
+    void displayBoard(Board board);
 
-	void displayWin();
+    void displayWin();
 
-	void displayLose();
+    void displayLose();
 
-	String getName();
+    String getName();
 
-	String getPlayerType();
+    String getPlayerType();
 
-	Game menu();
+    Game menu();
 }
