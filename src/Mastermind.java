@@ -26,15 +26,6 @@ public class Mastermind {
 
         while (true) {
             game.update();
-
-			/*
-            Runtime.getRuntime().addShutdownHook(new Thread() { //This code runs on shutdown
-				public void run() {
-					save(game, "test");
-				}
-			});
-			*/
-
         }
     }
 

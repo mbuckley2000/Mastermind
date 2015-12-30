@@ -20,18 +20,4 @@ public class PreviousGuess {
     public void setFeedback(Combination feedback) {
         this.feedback = feedback;
     }
-
-    public int blackPegCount() {
-        if (feedback != null) {
-            return (feedback.countPegs(Peg.getPeg("Black")));
-        }
-        return (0);
-    }
-
-    public int whitePegCount() {
-        if (feedback != null) {
-            return (feedback.countPegs(Peg.getPeg("White")));
-        }
-        return (0);
-    }
 }

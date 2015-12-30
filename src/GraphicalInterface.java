@@ -6,8 +6,6 @@ import javax.swing.*;
 
 public class GraphicalInterface extends JFrame implements Interface {
     private static final String type = "Graphical";
-    private Sprite woodSprite;
-    private Sprite hole;
     private String name;
 
     public GraphicalInterface(int boardSizeX, int boardSizeY, String title) {

@@ -17,10 +17,7 @@ public class Combination {
 
     public Combination(Peg... pegArray) {
         length = pegArray.length;
-        pegs = new Peg[length];
-        for (int i = 0; i < pegArray.length; i++) {
-            setPeg(i, pegArray[i]);
-        }
+        pegs = pegArray;
     }
 
     public Combination(byte[] idArray) {
