@@ -57,6 +57,7 @@ public class AIInterface implements Interface {
 	    try {
 		    lastGuessID = possibleCombinations.iterator().next();
 		    lastGuess = new PreviousGuess(new Combination(lastGuessID));
+            say(lastGuess.getGuess().toString());
 		    return (lastGuess.getGuess());
 	    } catch (NoSuchElementException e) {
 			//Run out of possible combinations!
@@ -79,6 +80,7 @@ public class AIInterface implements Interface {
         Combination feedbackCombination = new Combination(guess.getLength());
         feedbackCombination.addPeg(Peg.black, feedback[0]);
         feedbackCombination.addPeg(Peg.white, feedback[1]);
+        say(feedbackCombination.toString());
         return (feedbackCombination);
     }
 

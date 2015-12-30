@@ -6,53 +6,37 @@ import java.util.Stack;
  * Created by matt on 30/12/2015.
  */
 public class TextOutputWindow extends JFrame {
-	private Stack<String> messageStack;
 	private boolean newLine;
 	private JList<String> list;
 	private DefaultListModel listModel;
 
-	public TextOutputWindow() {
+	public TextOutputWindow(int width, int height) {
 		super("Output");
-		messageStack = new Stack();
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		setUndecorated(true);
+		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		listModel = new DefaultListModel();
-		newLine = true;
-		setLayout(new FlowLayout());
 		list = new JList(listModel);
-		getContentPane().add(list);
-		setSize(800, 800);
-		setVisible(true);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(list);
+		getContentPane().add(new JLabel("Console"));
+		getContentPane().add(scrollPane);
+		setSize(width, height);
+		newLine = true;
 	}
 
 	public void print(String message) {
 		if (newLine) {
-			messageStack.add(message);
+			listModel.addElement(message);
 			newLine = false;
 		} else {
-			messageStack.add(messageStack.pop() + message);
+			listModel.setElementAt((String) listModel.getElementAt(listModel.size() - 1) + message, listModel.size() - 1);
 		}
-		refresh();
+		setVisible(true);
 	}
 
 	public void println(String message) {
-		if (newLine) {
-			messageStack.add(message);
-		} else {
-			messageStack.add(messageStack.pop() + message);
-		}
+		print(message);
 		newLine = true;
-	}
-
-	private void refresh() {
-		while (listModel.size() < messageStack.size()) {
-			listModel.addElement("");
-		}
-		for (int i=0; i<messageStack.size(); i++) {
-			if (!messageStack.get(i).equals(listModel.get(i))) {
-				listModel.set(i, messageStack.get(i));
-			}
-		}
-		list.validate();
-		list.repaint();
-		setVisible(true);
 	}
 }

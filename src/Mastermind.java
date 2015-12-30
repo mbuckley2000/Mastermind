@@ -19,16 +19,15 @@ public class Mastermind {
         }
 
 	    Game game;
-	    Observer observer = new Observer(!guiMode);
 
         if (guiMode) {
 	        MenuWindow menuWindow = new MenuWindow();
 	        game = menuWindow.getGame();
+            game.setGraphical(true);
         } else {
 	        game = menu();
+            game.setGraphical(false);
         }
-
-	    game.setObserver(observer);
 
         while (true) {
             game.update();

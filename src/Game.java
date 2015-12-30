@@ -4,16 +4,6 @@ import java.io.ObjectOutputStream;
 /**
  * Created by matt on 13/12/2015.
  */
-
-/*
-    Game States:
-		0 - Code maker is making the code
-		1 - Code breaker is guessing
-		2 - Code maker is giving feedback
-		4 - Game over
-*/
-
-
 public class Game {
     private Board board;
     private int numberOfColours;
@@ -52,7 +42,7 @@ public class Game {
                 codeMaker.displayGuess(guess);
                 codeMaker.displayBoard(board);
                 codeBreaker.displayBoard(board);
-                observer.println("My guess is " + guess.toString());
+                observer.getGameWindow().displayBoard(board);
                 if (guess.equals(code)) {
                     //Code breaker has won
                     gameState = 3;
@@ -70,7 +60,6 @@ public class Game {
             case 2: { //Code maker is giving feedback
                 Combination feedback = codeMaker.getFeedback(board.peek().getGuess(), code);
                 board.peek().setFeedback(feedback);
-                observer.println("My feedback is " + feedback.toString());
                 codeBreaker.displayFeedback(feedback);
                 gameState = 1;
                 break;
@@ -86,8 +75,13 @@ public class Game {
                 }
                 observer.println("Game completed in " + guessCount + " guesses");
 	            //System.exit(0);
+                gameState = 4;
                 break;
             }
+
+            case 4:
+                //Finished
+                break;
 
             default: {
                 //Invalid gamestate
@@ -98,7 +92,6 @@ public class Game {
     }
 
 	public void setBoard(Board board) {
-
 	}
 
 	public void setState(int state) {
@@ -117,9 +110,14 @@ public class Game {
 	    }
     }
 
-	public void setObserver(Observer observer) {
-		this.observer = observer;
-		codeMaker.setObserver(observer);
-		codeBreaker.setObserver(observer);
-	}
+    public void setGraphical(boolean graphical) {
+        if (graphical) {
+            if (!codeMaker.getPlayerType().equals("Graphical") || !codeBreaker.getPlayerType().equals("Graphical"))
+            this.observer = new Observer(numberOfPegs, board.getMaxLength());
+        } else {
+            this.observer = new Observer();
+        }
+        codeMaker.setObserver(observer);
+        codeBreaker.setObserver(observer);
+    }
 }
