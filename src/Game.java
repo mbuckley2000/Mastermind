@@ -73,7 +73,7 @@ public class Game {
             }
 
             case 3: { //End of game
-                if (board.peek().equals(code)) {
+                if (board.peek().getGuess().equals(code)) {
                     codeMaker.displayLose();
                     codeBreaker.displayWin();
                 } else {

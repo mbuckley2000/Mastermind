@@ -71,7 +71,7 @@ public class Mastermind {
     public static Game newGame() {
         int numberOfColours = 3;
         int numberOfPegs = 3;
-        int boardLength = 100;
+        int boardLength = 12;
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter the number of colours you would like (3-8)");
@@ -92,7 +92,6 @@ public class Mastermind {
 
         Interface codeBreaker = new AIInterface("Breaker", numberOfColours, numberOfPegs);
         Interface codeMaker = new AIInterface("Maker", numberOfColours, numberOfPegs);
-
         //Interface codeMaker = new GraphicalInterface(numberOfPegs, boardLength, "Mastermind");
 
         Game game = new Game(numberOfColours, numberOfPegs, boardLength, codeMaker, codeBreaker);

@@ -26,7 +26,7 @@ public class Combination {
     public Combination(byte[] idArray) {
         length = idArray.length;
         pegs = new Peg[length];
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             pegs[i] = Peg.getPeg(idArray[i]);
         }
     }

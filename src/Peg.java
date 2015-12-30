@@ -20,11 +20,11 @@ public class Peg {
             new Peg("White", "images/white.png"),
             new Peg("Empty", "images/empty.png")
     };
+    public static Peg black = getPeg("Black");
+    public static Peg white = getPeg("White");
     private byte id;
     private String colour;
     private String spriteFilePath;
-    public static Peg black = getPeg("Black");
-    public static Peg white = getPeg("White");
 
 
     public Peg(String colour, String spriteFilePath) {
