@@ -10,12 +10,17 @@ public class AIInterface implements Interface {
     private PreviousGuess lastGuess;
     private Set<byte[]> possibleCombinations;
     private byte[] lastGuessID;
+    private Observer observer;
 
     public AIInterface(String name, int numberOfColours, int numberOfPegs) {
         this.name = name;
         lastGuess = new PreviousGuess(null);
         possibleCombinations = new HashSet();
         fillPossibleCombinations(new byte[numberOfPegs], numberOfColours, numberOfPegs);
+    }
+
+    public void setObserver(Observer observer) {
+        this.observer = observer;
     }
 
     public static byte[] getFeedback(byte[] guess, byte[] code) {
@@ -49,9 +54,15 @@ public class AIInterface implements Interface {
     }
 
     public Combination getGuess(int length) {
-        lastGuessID = possibleCombinations.iterator().next();
-        lastGuess = new PreviousGuess(new Combination(lastGuessID));
-        return (lastGuess.getGuess());
+	    try {
+		    lastGuessID = possibleCombinations.iterator().next();
+		    lastGuess = new PreviousGuess(new Combination(lastGuessID));
+		    return (lastGuess.getGuess());
+	    } catch (NoSuchElementException e) {
+			//Run out of possible combinations!
+		    say("I won't play with cheats!");
+	    }
+	    return(null);
     }
 
     public Combination getCode(int length) {
@@ -111,7 +122,7 @@ public class AIInterface implements Interface {
     }
 
     private void say(String message) {
-        System.out.println(name + ": " + message);
+        observer.println(name + ": " + message);
     }
 
     private Combination randomCombination(int length) {

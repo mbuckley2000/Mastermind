@@ -9,7 +9,6 @@ public class TextualInterface implements Interface {
     private Scanner input;
     private String name;
 
-
     public TextualInterface() {
         input = new Scanner(System.in);
     }
@@ -77,6 +76,9 @@ public class TextualInterface implements Interface {
         }
     }
 
+    public void setObserver(Observer observer) {
+    }
+
     private Combination getCombination(int length) {
         Combination combination = new Combination(length);
         String colour;
@@ -84,6 +86,12 @@ public class TextualInterface implements Interface {
         for (int i = 0; i < length; i++) {
             //Get color as input
             colour = input.next();
+            if (colour == "save") {
+                System.out.println("Enter filename to save: ");
+                //game.save(input.next());
+	            System.out.println("Game saved! Quitting...");
+	            System.exit(0);
+            }
             peg = Peg.getPeg(colour);
             if (peg != null) {
                 combination.setPeg(i, peg);
@@ -93,27 +101,5 @@ public class TextualInterface implements Interface {
             }
         }
         return (combination);
-    }
-
-    public Game menu() {
-        String lastString = "";
-        System.out.println("Load or new game?");
-        Game game = null;
-        do {
-            lastString = input.nextLine().toLowerCase();
-            if (!lastString.contains("load") && !lastString.contains("new")) {
-                System.err.println("Unrecognized command: " + lastString);
-            }
-
-            if (lastString.contains("load")) {
-                System.out.println("Please enter the filename of the save that you wish to load:");
-                game = Mastermind.load(input.nextLine());
-            }
-
-            if (lastString.contains("new")) {
-                game = Mastermind.newGame();
-            }
-        } while (!lastString.contains("load") && !lastString.contains("new"));
-        return (game);
     }
 }

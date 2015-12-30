@@ -2,61 +2,51 @@
  * Created by matt on 11/12/2015.
  */
 
+import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
+import java.util.Scanner;
+
 
 public class Mastermind {
     public static void main(String[] args) {
-        boolean guiMode = false;
+        boolean guiMode = true;
         for (String s : args) {
-            if (s.equals("gui")) {
-                //We are in GUI mode
-                guiMode = true;
+            if (s.equals("textual")) {
+                //We are in textual mode
+                guiMode = false;
             }
         }
 
-        Interface menuInterface = null;
+	    Game game;
+	    Observer observer = new Observer(!guiMode);
+
         if (guiMode) {
-            menuInterface = new GraphicalInterface(0, 0, "Mastermind");
+	        MenuWindow menuWindow = new MenuWindow();
+	        game = menuWindow.getGame();
         } else {
-            menuInterface = new TextualInterface();
+	        game = menu();
         }
 
-        Game game = menuInterface.menu();
+	    game.setObserver(observer);
 
         while (true) {
             game.update();
         }
     }
 
-    public static void save(Game game, String filename) {
-        try {
-            FileOutputStream fos = new FileOutputStream(filename + ".mastermind");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(game);
-            oos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Game load(String filename) {
-        try {
+    private static Game load(String filename) {
+	    try {
             FileInputStream fis = new FileInputStream(filename + ".mastermind");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            Game game = (Game) ois.readObject();
+            Save save = (Save)ois.readObject();
             ois.close();
-            return (game);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+		    return(save.getGame());
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
         }
-        return (null);
+	    return (null);
     }
 
     public static Game newGame() {
@@ -89,4 +79,28 @@ public class Mastermind {
 
         return (game);
     }
+
+	public static Game menu() {
+		Scanner input = new Scanner(System.in);
+
+		String lastString = "";
+		System.out.println("Load or new game?");
+		Game game = null;
+		do {
+			lastString = input.nextLine().toLowerCase();
+			if (!lastString.contains("load") && !lastString.contains("new")) {
+				System.err.println("Unrecognized command: " + lastString);
+			}
+
+			if (lastString.contains("load")) {
+				System.out.println("Please enter the filename of the save that you wish to load:");
+				game = load(input.nextLine());
+			}
+
+			if (lastString.contains("new")) {
+				game = Mastermind.newGame();
+			}
+		} while (!lastString.contains("load") && !lastString.contains("new") || game == null);
+		return (game);
+	}
 }

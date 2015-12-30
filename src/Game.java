@@ -1,3 +1,6 @@
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * Created by matt on 13/12/2015.
  */
@@ -20,6 +23,7 @@ public class Game {
     private int gameState;
     private Combination code;
     private int guessCount;
+    private Observer observer;
 
     public Game(int numberOfColours, int numberOfPegs, int boardLength, Interface codeMaker, Interface codeBreaker) {
         this.codeBreaker = codeBreaker;
@@ -48,7 +52,7 @@ public class Game {
                 codeMaker.displayGuess(guess);
                 codeMaker.displayBoard(board);
                 codeBreaker.displayBoard(board);
-                System.out.println("My guess is " + guess.toString());
+                observer.println("My guess is " + guess.toString());
                 if (guess.equals(code)) {
                     //Code breaker has won
                     gameState = 3;
@@ -66,7 +70,7 @@ public class Game {
             case 2: { //Code maker is giving feedback
                 Combination feedback = codeMaker.getFeedback(board.peek().getGuess(), code);
                 board.peek().setFeedback(feedback);
-                System.out.println("My feedback is " + feedback.toString());
+                observer.println("My feedback is " + feedback.toString());
                 codeBreaker.displayFeedback(feedback);
                 gameState = 1;
                 break;
@@ -80,16 +84,11 @@ public class Game {
                     codeMaker.displayWin();
                     codeBreaker.displayLose();
                 }
-                System.out.println("Guesses: " + guessCount);
-                gameState = 4;
+                observer.println("Game completed in " + guessCount + " guesses");
+	            //System.exit(0);
                 break;
             }
 
-            case 4: { //Reset game
-                board.empty();
-                //gameState = 0;
-                break;
-            }
             default: {
                 //Invalid gamestate
                 System.err.println("Invalid gameState: " + gameState);
@@ -97,4 +96,30 @@ public class Game {
             }
         }
     }
+
+	public void setBoard(Board board) {
+
+	}
+
+	public void setState(int state) {
+		gameState = state;
+	}
+
+    public void save(String filename) {
+        Save save = new Save(gameState, board, numberOfPegs, numberOfColours, codeMaker, codeBreaker);
+	    try {
+		    FileOutputStream fos = new FileOutputStream(filename + ".mastermind");
+		    ObjectOutputStream oos = new ObjectOutputStream(fos);
+		    oos.writeObject(save);
+		    oos.close();
+	    } catch (Exception e) {
+		    e.printStackTrace();
+	    }
+    }
+
+	public void setObserver(Observer observer) {
+		this.observer = observer;
+		codeMaker.setObserver(observer);
+		codeBreaker.setObserver(observer);
+	}
 }

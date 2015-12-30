@@ -26,5 +26,5 @@ public interface Interface {
 
     String getPlayerType();
 
-    Game menu();
+    void setObserver(Observer observer);
 }

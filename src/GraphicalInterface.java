@@ -85,6 +85,9 @@ public class GraphicalInterface extends JFrame implements Interface {
         setVisible(true);
     }
 
+    public void setObserver(Observer observer) {
+    }
+
     public void clearDisplay() {
 
     }
