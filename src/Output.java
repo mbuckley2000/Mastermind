@@ -3,4 +3,8 @@
  */
 public interface Output {
 	void update();
+
+	void println(String message);
+
+	void print(String message);
 }

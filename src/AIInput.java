@@ -18,34 +18,29 @@ public class AIInput implements Input {
 		fillPossibleCombinations(new byte[board.getNumberOfPegs()], board.getNumberOfColours(), board.getNumberOfPegs());
 	}
 
-	private static byte[] getFeedback(byte[] guess, byte[] code) {
-		if (guess.length == code.length) {
-			byte blackCounter = 0;
-			byte whiteCounter = 0;
-			Boolean[] ignore = new Boolean[code.length];
+	public static byte[] getFeedback(byte[] guess, byte[] code) {
+		byte blackCounter = 0;
+		byte whiteCounter = 0;
+		Boolean[] ignore = new Boolean[code.length];
 
-			for (int i = 0; i < guess.length; i++) {
-				if (guess[i] == code[i]) {
-					ignore[i] = true;
-					blackCounter++;
-				}
+		for (int i = 0; i < guess.length; i++) {
+			if (guess[i] == code[i]) {
+				ignore[i] = true;
+				blackCounter++;
 			}
-
-			for (int i = 0; i < guess.length; i++) {
-				for (int j = 0; j < code.length; j++) {
-					if (guess[i] == code[j] && ignore[j] == null) {
-						ignore[j] = true;
-						whiteCounter++;
-						break;
-					}
-				}
-			}
-
-			return (new byte[]{blackCounter, whiteCounter});
-		} else {
-			System.err.println("Guess and code are different lengths. Cannot generate feedback");
-			return (null);
 		}
+
+		for (int i = 0; i < guess.length; i++) {
+			for (int j = 0; j < code.length; j++) {
+				if (guess[i] == code[j] && ignore[i] == null && ignore[j] == null) {
+					ignore[j] = true;
+					whiteCounter++;
+					break;
+				}
+			}
+		}
+
+		return (new byte[]{blackCounter, whiteCounter});
 	}
 
 	public Combination getFeedback() {
@@ -63,7 +58,8 @@ public class AIInput implements Input {
 			lastGuess = new PreviousGuess(new Combination(lastGuessID));
 			return (lastGuess.getGuess());
 		} catch (NoSuchElementException e) {
-			//Run out of possible combinations!
+			System.err.println("AI has run out of possible combinations");
+			System.exit(1);
 		}
 		return (null);
 	}
@@ -74,21 +70,25 @@ public class AIInput implements Input {
 	}
 
 	private void removeImpossibleCombinations() {
-		Combination feedback = board.peek().getFeedback();
-		Stack<byte[]> impossibleCombinations = new Stack();
-		impossibleCombinations.add(lastGuessID);
-		lastGuess.setFeedback(feedback);
-		byte blackPegs = (byte) feedback.countPegs(Peg.black);
-		byte whitePegs = (byte) feedback.countPegs(Peg.white);
-		if (blackPegs + whitePegs != 0) {
-			for (byte[] ba : possibleCombinations) {
-				if (getFeedback(lastGuessID, ba)[0] != blackPegs || getFeedback(lastGuessID, ba)[1] != whitePegs) {
-					impossibleCombinations.add(ba);
+		if (board.peek() != null) {
+			Combination feedback = board.peek().getFeedback();
+			if (feedback != null) {
+				Stack<byte[]> impossibleCombinations = new Stack();
+				impossibleCombinations.add(lastGuessID);
+				lastGuess.setFeedback(feedback);
+				byte blackPegs = (byte) feedback.countPegs(Peg.black);
+				byte whitePegs = (byte) feedback.countPegs(Peg.white);
+				if (blackPegs + whitePegs != 0) {
+					for (byte[] ba : possibleCombinations) {
+						if (getFeedback(lastGuessID, ba)[0] != blackPegs || getFeedback(lastGuessID, ba)[1] != whitePegs) {
+							impossibleCombinations.add(ba);
+						}
+					}
+				}
+				while (!impossibleCombinations.isEmpty()) {
+					possibleCombinations.remove(impossibleCombinations.pop());
 				}
 			}
-		}
-		while (!impossibleCombinations.isEmpty()) {
-			possibleCombinations.remove(impossibleCombinations.pop());
 		}
 	}
 

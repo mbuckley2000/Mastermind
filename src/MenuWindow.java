@@ -22,11 +22,9 @@ public class MenuWindow extends JFrame {
 	private Game game;
 
 	public MenuWindow() {
-		super("Mastermind");
-		setSize(1000, 1000);
+		super("Mastermind - Menu");
 		setLayout(new FlowLayout());
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		numbers = new Integer[]{new Integer(3), new Integer(4), new Integer(5), new Integer(6), new Integer(7), new Integer(8)};
 		playerTypes = new String[]{"Human", "AI"};

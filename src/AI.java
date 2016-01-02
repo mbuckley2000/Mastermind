@@ -11,4 +11,8 @@ public class AI implements Player {
 	public Input getInput() {
 		return (input);
 	}
+
+	public String getPlayerType() {
+		return("AI");
+	}
 }

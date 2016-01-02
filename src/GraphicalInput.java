@@ -17,7 +17,12 @@ public class GraphicalInput implements Input {
 	}
 
 	public Combination getFeedback() {
-		return (getCombination("Please enter your feedback", board.getNumberOfPegs(), Peg.getPeg("Empty"), Peg.getPeg("Black"), Peg.getPeg("White")));
+		Combination userFeedback = getCombination("Please enter your feedback", board.getNumberOfPegs(), Peg.getPeg("Empty"), Peg.getPeg("Black"), Peg.getPeg("White"));
+		byte[] correctFeedback = AIInput.getFeedback(board.peek().getGuess().toIDArray(), board.getCode().toIDArray());
+		while (userFeedback.countPegs(Peg.black) != correctFeedback[0] || userFeedback.countPegs(Peg.white) != correctFeedback[1]) {
+			userFeedback = getCombination("Cheat! Please re-enter the CORRECT feedback", board.getNumberOfPegs(), Peg.getPeg("Empty"), Peg.getPeg("Black"), Peg.getPeg("White"));
+		}
+		return (userFeedback);
 	}
 
 	private Combination getCombination(String title, int length, Peg... options) {

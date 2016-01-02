@@ -9,15 +9,13 @@ public class TextOutputWindow extends JFrame {
 	private DefaultListModel listModel;
 
 	public TextOutputWindow(int width, int height) {
-		super("Output");
+		super("Mastermind - Output");
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		listModel = new DefaultListModel();
 		list = new JList(listModel);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(list);
-		getContentPane().add(new JLabel("Console"));
 		getContentPane().add(scrollPane);
 		setSize(width, height);
 		newLine = true;
@@ -28,7 +26,7 @@ public class TextOutputWindow extends JFrame {
 			listModel.addElement(message);
 			newLine = false;
 		} else {
-			listModel.setElementAt((String) listModel.getElementAt(listModel.size() - 1) + message, listModel.size() - 1);
+			listModel.setElementAt(listModel.getElementAt(listModel.size() - 1) + message, listModel.size() - 1);
 		}
 		setVisible(true);
 	}

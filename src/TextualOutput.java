@@ -22,10 +22,25 @@ public class TextualOutput implements Output {
 	}
 
 	private void clearOutput() {
+		try {
+			Runtime.getRuntime().exec("clear");
+		} catch (Exception e) {
 
+		}
 	}
 
 	private void drawBoard() {
-
+		for (PreviousGuess row : board.getPreviousGuesses()) {
+			Combination guess = row.getGuess();
+			Combination feedback = row.getFeedback();
+			if (guess != null) {
+				print(guess.toString());
+			}
+			if (feedback != null) {
+				print("     --     ");
+				print(feedback.toString());
+			}
+			println("");
+		}
 	}
 }

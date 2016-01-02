@@ -3,4 +3,5 @@
  */
 public interface Player {
 	Input getInput();
+	String getPlayerType();
 }

@@ -1,6 +1,3 @@
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-
 /**
  * Created by matt on 13/12/2015.
  */
@@ -11,6 +8,7 @@ public class Game {
 	private int gameState;
 	private Combination code;
 	private int guessCount;
+	private Output output;
 
 	public Game(Board board, Player codeMaker, Player codeBreaker) {
 		this.codeBreaker = codeBreaker;
@@ -25,6 +23,7 @@ public class Game {
 		switch (gameState) {
 			case 0: { //Code maker is making the code
 				code = codeMaker.getInput().getCode();
+				board.setCode(code);
 				gameState = 1;
 				break;
 			}
@@ -53,8 +52,10 @@ public class Game {
 				//Guesscount print
 				if (board.peek().getGuess().equals(code)) {
 					//Codebreaker won
+					output.println("Code breaker wins");
 				} else {
 					//Codemaker won
+					output.println("Code maker wins");
 				}
 				gameState = 4;
 				break;
@@ -69,18 +70,6 @@ public class Game {
 				System.err.println("Invalid gameState: " + gameState);
 				break;
 			}
-		}
-	}
-
-	public void save(String filename) {
-		Save save = new Save(this);
-		try {
-			FileOutputStream fos = new FileOutputStream(filename + ".mastermind");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(save);
-			oos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -105,5 +94,9 @@ public class Game {
 
 	public Player getCodeBreaker() {
 		return (codeBreaker);
+	}
+
+	public void setOutput(Output output) {
+		this.output = output;
 	}
 }

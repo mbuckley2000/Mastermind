@@ -14,12 +14,13 @@ public class Save implements Serializable {
 
 	public Save(Game game) {
 		Board board = game.getBoard();
+		Player codeMaker = game.getCodeMaker();
+		Player codeBreaker = game.getCodeBreaker();
+
 		gameState = game.getState();
 		boardLength = board.getMaxLength();
 		numberOfColours = board.getNumberOfColours();
 		numberOfPegs = board.getNumberOfPegs();
-		Player codeMaker = game.getCodeMaker();
-		Player codeBreaker = game.getCodeBreaker();
 
 		guesses = new byte[board.getCurrentLength()][numberOfPegs];
 		feedbacks = new byte[board.getCurrentLength()][2];
@@ -35,24 +36,25 @@ public class Save implements Serializable {
 			ba[1] = (byte) board.getCombination(i++).getFeedback().countPegs(Peg.white);
 		}
 
-		//playerType = new String[]{codeMaker.getPlayerType(), codeBreaker.getPlayerType()};
+		playerType = new String[]{codeMaker.getPlayerType(), codeBreaker.getPlayerType()};
 	}
 
-	public Game getGame() {
-		Player codeMaker = getPlayer(0);
-		Player codeBreaker = getPlayer(1);
-		Game game = new Game(getBoard(), codeMaker, codeBreaker);
+	public Game getGame(boolean graphical) {
+		Board board = getBoard();
+		Player codeMaker = getPlayer(0, board, graphical);
+		Player codeBreaker = getPlayer(1, board, graphical);
+		Game game = new Game(board, codeMaker, codeBreaker);
 		game.setState(gameState);
 		return (game);
 	}
 
-	private Player getPlayer(int playerNumber) {
+	private Player getPlayer(int playerNumber, Board board, boolean graphical) {
 		if (playerNumber == 0 || playerNumber == 1) {
 			Player player = null;
-			if (playerType[playerNumber].toLowerCase().equals("human")) {
-				player = new Human(true, getBoard());
-			} else if (playerType[playerNumber].toLowerCase().equals("ai")) {
-				player = new AI(getBoard());
+			if (playerType[playerNumber].equals("Human")) {
+				player = new Human(graphical, board);
+			} else if (playerType[playerNumber].equals("AI")) {
+				player = new AI(board);
 			}
 			return (player);
 		} else {

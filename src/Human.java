@@ -15,4 +15,8 @@ public class Human implements Player {
 	public Input getInput() {
 		return (input);
 	}
+
+	public String getPlayerType() {
+		return("Human");
+	}
 }

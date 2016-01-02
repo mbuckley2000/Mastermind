@@ -10,7 +10,7 @@ public class Sprite extends JComponent {
 	private Vector2i position;
 	private Vector2i size;
 
-	public Sprite(String filePath) {
+	public Sprite(String filePath, JFrame target) {
 		super();
 		try {
 			image = ImageIO.read(new File(filePath));
@@ -19,7 +19,7 @@ public class Sprite extends JComponent {
 		}
 		position = new Vector2i(0, 0);
 		size = new Vector2i(image.getWidth(), image.getHeight());
-		setBounds(0, 0, 600, 700);
+		setBounds(0, 0, target.getWidth(), target.getHeight());
 	}
 
 	public void setPosition(int x, int y) {

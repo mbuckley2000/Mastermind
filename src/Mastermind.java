@@ -3,12 +3,16 @@
  */
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 
 public class Mastermind {
 	private static boolean guiMode = true;
+	private static Game game;
+	private static Output output;
 
 	private static void interpretArguments(String[] args) {
 		for (String s : args) {
@@ -22,9 +26,6 @@ public class Mastermind {
 	public static void main(String[] args) {
 		interpretArguments(args);
 
-		Game game;
-		Output output;
-
 		if (guiMode) {
 			MenuWindow menuWindow = new MenuWindow();
 			game = menuWindow.getGame();
@@ -34,20 +35,33 @@ public class Mastermind {
 			output = new TextualOutput(game.getBoard());
 		}
 
+		game.setOutput(output);
+
 		while (true) {
 			game.update();
 			output.update();
 		}
 	}
 
-	private static Game load(String filename) {
+	public static void save(String filename) {
+		Save save = new Save(game);
+		try {
+			FileOutputStream fos = new FileOutputStream(filename + ".mastermind");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(save);
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Game load(String filename) {
 		try {
 			FileInputStream fis = new FileInputStream(filename + ".mastermind");
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			Save save = (Save) ois.readObject();
 			ois.close();
-			return (save.getGame());
-
+			return (save.getGame(guiMode));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

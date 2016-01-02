@@ -8,6 +8,7 @@ public class Board {
 	private int length;
 	private int numberOfPegs;
 	private int numberOfColours;
+	private Combination code;
 
 	public Board(int length, int numberOfPegs, int numberOfColours) {
 		this.length = length;
@@ -59,6 +60,14 @@ public class Board {
 
 	public int getNumberOfColours() {
 		return (numberOfColours);
+	}
+
+	public Combination getCode() {
+		return (code);
+	}
+
+	public void setCode(Combination code) {
+		this.code = code;
 	}
 
 	public PreviousGuess[] getPreviousGuesses() {
