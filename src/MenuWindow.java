@@ -28,8 +28,8 @@ public class MenuWindow extends JFrame {
 		setUndecorated(true);
 		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
-		numbers = new Integer[] {new Integer(3), new Integer(4), new Integer(5), new Integer(6), new Integer(7), new Integer(8)};
-		playerTypes = new String[] {"Human", "AI"};
+		numbers = new Integer[]{new Integer(3), new Integer(4), new Integer(5), new Integer(6), new Integer(7), new Integer(8)};
+		playerTypes = new String[]{"Human", "AI"};
 		coloursLabel = new JLabel("Number of colours: ");
 		pegsLabel = new JLabel("Number of pegs: ");
 		makerLabel = new JLabel("Code maker type: ");
@@ -62,25 +62,26 @@ public class MenuWindow extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (game == null) {
-						Interface codeMaker;
-						Interface codeBreaker;
-						int numberOfColours = (Integer)coloursCombo.getSelectedItem();
-						int numberOfPegs = (Integer)pegsCombo.getSelectedItem();
+						Player codeMaker;
+						Player codeBreaker;
+						int numberOfColours = (Integer) coloursCombo.getSelectedItem();
+						int numberOfPegs = (Integer) pegsCombo.getSelectedItem();
 						int boardLength = 12;
+						Board board = new Board(boardLength, numberOfPegs, numberOfColours);
 
 						if (makerCombo.getSelectedItem().equals("AI")) {
-							codeMaker = new AIInterface("Code Maker", numberOfColours, numberOfPegs);
+							codeMaker = new AI(board);
 						} else {
-							codeMaker = new GraphicalInterface(numberOfPegs, boardLength, "Mastermind");
+							codeMaker = new Human(true, board);
 						}
 
 						if (breakerCombo.getSelectedItem().equals("AI")) {
-							codeBreaker = new AIInterface("Code Breaker", numberOfColours, numberOfPegs);
+							codeBreaker = new AI(board);
 						} else {
-							codeBreaker = new GraphicalInterface(numberOfPegs, boardLength, "Mastermind");
+							codeBreaker = new Human(true, board);
 						}
 
-						game = new Game(numberOfColours, numberOfPegs, boardLength, codeMaker, codeBreaker);
+						game = new Game(board, codeMaker, codeBreaker);
 					}
 				}
 			});

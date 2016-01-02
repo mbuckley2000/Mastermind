@@ -1,6 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.util.Stack;
 
 /**
  * Created by matt on 30/12/2015.

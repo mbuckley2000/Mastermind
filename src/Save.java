@@ -11,60 +11,58 @@ public class Save implements Serializable {
 	private int numberOfColours;
 	private int gameState;
 	private String[] playerType;
-	private String[] playerName;
 
-	public Save(int gameState, Board board, int numberOfPegs, int numberOfColours, Interface codeMaker, Interface codeBreaker) {
+	public Save(Game game) {
+		Board board = game.getBoard();
+		gameState = game.getState();
 		boardLength = board.getMaxLength();
-		this.numberOfPegs = numberOfPegs;
-		this.numberOfColours = numberOfColours;
-		this.gameState = gameState;
+		numberOfColours = board.getNumberOfColours();
+		numberOfPegs = board.getNumberOfPegs();
+		Player codeMaker = game.getCodeMaker();
+		Player codeBreaker = game.getCodeBreaker();
 
 		guesses = new byte[board.getCurrentLength()][numberOfPegs];
 		feedbacks = new byte[board.getCurrentLength()][2];
 
-		int i=0;
+		int i = 0;
 		for (byte[] ba : guesses) {
 			ba = board.getCombination(i++).getGuess().toIDArray();
 		}
 
-		i=0;
+		i = 0;
 		for (byte[] ba : feedbacks) {
-			ba[0] = (byte)board.getCombination(i++).getFeedback().countPegs(Peg.black);
-			ba[1] = (byte)board.getCombination(i++).getFeedback().countPegs(Peg.white);
+			ba[0] = (byte) board.getCombination(i++).getFeedback().countPegs(Peg.black);
+			ba[1] = (byte) board.getCombination(i++).getFeedback().countPegs(Peg.white);
 		}
 
-		playerType = new String[] {codeMaker.getPlayerType(), codeBreaker.getPlayerType()};
-		playerName = new String[] {codeMaker.getName(), codeBreaker.getName()};
+		//playerType = new String[]{codeMaker.getPlayerType(), codeBreaker.getPlayerType()};
 	}
 
 	public Game getGame() {
-		Interface codeMaker = getPlayer(0);
-		Interface codeBreaker = getPlayer(1);
-		Game game = new Game(numberOfColours, numberOfPegs, boardLength, codeMaker, codeBreaker);
+		Player codeMaker = getPlayer(0);
+		Player codeBreaker = getPlayer(1);
+		Game game = new Game(getBoard(), codeMaker, codeBreaker);
 		game.setState(gameState);
-		game.setBoard(getBoard());
-		return(game);
+		return (game);
 	}
 
-	private Interface getPlayer(int playerNumber) {
+	private Player getPlayer(int playerNumber) {
 		if (playerNumber == 0 || playerNumber == 1) {
-			Interface player = null;
-			if (playerType[playerNumber].toLowerCase().equals("textual")) {
-				player = new TextualInterface();
-			} else if (playerType[playerNumber].toLowerCase().equals("graphical")) {
-				player = new GraphicalInterface(numberOfPegs, boardLength, "Mastermind");
+			Player player = null;
+			if (playerType[playerNumber].toLowerCase().equals("human")) {
+				player = new Human(true, getBoard());
 			} else if (playerType[playerNumber].toLowerCase().equals("ai")) {
-				player = new AIInterface(playerName[0], numberOfColours, numberOfPegs);
+				player = new AI(getBoard());
 			}
 			return (player);
 		} else {
-			return(null);
+			return (null);
 		}
 	}
 
 	private Board getBoard() {
-		Board board = new Board(boardLength);
-		for (int y=0; y < boardLength; y++) {
+		Board board = new Board(boardLength, numberOfPegs, numberOfColours);
+		for (int y = 0; y < boardLength; y++) {
 			Combination guess = new Combination(guesses[y]);
 			Combination feedback = new Combination(numberOfPegs);
 			feedback.addPeg(Peg.black, feedbacks[y][0]);

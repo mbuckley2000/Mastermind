@@ -2,84 +2,91 @@
  * Created by matt on 11/12/2015.
  */
 
-import java.awt.*;
-import java.io.*;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 
 public class Mastermind {
-    public static void main(String[] args) {
-        boolean guiMode = true;
-        for (String s : args) {
-            if (s.equals("textual")) {
-                //We are in textual mode
-                guiMode = false;
-            }
-        }
+	private static boolean guiMode = true;
 
-	    Game game;
+	private static void interpretArguments(String[] args) {
+		for (String s : args) {
+			if (s.equals("textual")) {
+				//We are in textual mode
+				guiMode = false;
+			}
+		}
+	}
 
-        if (guiMode) {
-	        MenuWindow menuWindow = new MenuWindow();
-	        game = menuWindow.getGame();
-            game.setGraphical(true);
-        } else {
-	        game = menu();
-            game.setGraphical(false);
-        }
+	public static void main(String[] args) {
+		interpretArguments(args);
 
-        while (true) {
-            game.update();
-        }
-    }
+		Game game;
+		Output output;
 
-    private static Game load(String filename) {
-	    try {
-            FileInputStream fis = new FileInputStream(filename + ".mastermind");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            Save save = (Save)ois.readObject();
-            ois.close();
-		    return(save.getGame());
+		if (guiMode) {
+			MenuWindow menuWindow = new MenuWindow();
+			game = menuWindow.getGame();
+			output = new GraphicalOutput(game.getBoard());
+		} else {
+			game = textualMenu();
+			output = new TextualOutput(game.getBoard());
+		}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-        }
-	    return (null);
-    }
+		while (true) {
+			game.update();
+			output.update();
+		}
+	}
 
-    public static Game newGame() {
-        int numberOfColours = 3;
-        int numberOfPegs = 3;
-        int boardLength = 12;
-        Scanner scanner = new Scanner(System.in);
+	private static Game load(String filename) {
+		try {
+			FileInputStream fis = new FileInputStream(filename + ".mastermind");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			Save save = (Save) ois.readObject();
+			ois.close();
+			return (save.getGame());
 
-        System.out.println("Please enter the number of colours you would like (3-8)");
-        do {
-            numberOfColours = scanner.nextInt();
-            if (numberOfColours < 3 || numberOfColours > 8) {
-                System.err.println("Invalid number of colours. Please choose a value between 3 and 8");
-            }
-        } while (numberOfColours < 3 || numberOfColours > 8);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return (null);
+	}
 
-        System.out.println("Please enter the number of pegs you would like hidden (3-8)");
-        do {
-            numberOfPegs = scanner.nextInt();
-            if (numberOfPegs < 3 || numberOfPegs > 8) {
-                System.err.println("Invalid number of pegs. Please choose a value between 3 and 8");
-            }
-        } while (numberOfPegs < 3 || numberOfPegs > 8);
+	public static Game newGame() {
+		int numberOfColours;
+		int numberOfPegs;
+		int boardLength = 12;
+		Scanner scanner = new Scanner(System.in);
 
-        Interface codeBreaker = new AIInterface("Breaker", numberOfColours, numberOfPegs);
-        Interface codeMaker = new AIInterface("Maker", numberOfColours, numberOfPegs);
-        //Interface codeMaker = new GraphicalInterface(numberOfPegs, boardLength, "Mastermind");
+		System.out.println("Please enter the number of colours you would like (3-8)");
+		do {
+			numberOfColours = scanner.nextInt();
+			if (numberOfColours < 3 || numberOfColours > 8) {
+				System.err.println("Invalid number of colours. Please choose a value between 3 and 8");
+			}
+		} while (numberOfColours < 3 || numberOfColours > 8);
 
-        Game game = new Game(numberOfColours, numberOfPegs, boardLength, codeMaker, codeBreaker);
+		System.out.println("Please enter the number of pegs you would like hidden (3-8)");
+		do {
+			numberOfPegs = scanner.nextInt();
+			if (numberOfPegs < 3 || numberOfPegs > 8) {
+				System.err.println("Invalid number of pegs. Please choose a value between 3 and 8");
+			}
+		} while (numberOfPegs < 3 || numberOfPegs > 8);
 
-        return (game);
-    }
+		Board board = new Board(boardLength, numberOfPegs, numberOfColours);
 
-	public static Game menu() {
+		Player codeBreaker = new AI(board);
+		Player codeMaker = new AI(board);
+
+		Game game = new Game(board, codeMaker, codeBreaker);
+
+		return (game);
+	}
+
+	public static Game textualMenu() {
 		Scanner input = new Scanner(System.in);
 
 		String lastString = "";

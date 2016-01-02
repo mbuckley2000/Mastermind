@@ -11,10 +11,10 @@ public class Guess {
 	}
 
 	public Combination getGuess() {
-		return(guess);
+		return (guess);
 	}
 
 	public Combination getFeedback() {
-		return(feedback);
+		return (feedback);
 	}
 }
