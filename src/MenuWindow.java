@@ -8,7 +8,8 @@ import java.awt.event.WindowEvent;
  * Created by matt on 30/12/2015.
  */
 public class MenuWindow extends JFrame {
-	private JButton okButton;
+	private JButton newButton;
+	private JButton loadButton;
 	private Integer[] numbers;
 	private String[] playerTypes;
 	private JLabel coloursLabel;
@@ -24,7 +25,6 @@ public class MenuWindow extends JFrame {
 	public MenuWindow() {
 		super("Mastermind - Menu");
 		setLayout(new FlowLayout());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		numbers = new Integer[]{new Integer(3), new Integer(4), new Integer(5), new Integer(6), new Integer(7), new Integer(8)};
 		playerTypes = new String[]{"Human", "AI"};
@@ -46,8 +46,10 @@ public class MenuWindow extends JFrame {
 		add(breakerLabel);
 		add(breakerCombo);
 
-		okButton = new JButton("OK");
-		add(okButton);
+		newButton = new JButton("New Game");
+		loadButton = new JButton("Load Game");
+		add(newButton);
+		add(loadButton);
 
 		pack();
 		setVisible(true);
@@ -56,7 +58,7 @@ public class MenuWindow extends JFrame {
 	public Game getGame() {
 		game = null;
 		while (game == null) {
-			okButton.addActionListener(new ActionListener() {
+			newButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (game == null) {
@@ -80,6 +82,14 @@ public class MenuWindow extends JFrame {
 						}
 
 						game = new Game(board, codeMaker, codeBreaker);
+					}
+				}
+			});
+			loadButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (game == null) {
+						game = Mastermind.load("save");
 					}
 				}
 			});

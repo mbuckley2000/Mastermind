@@ -1,5 +1,12 @@
 /**
- * Created by matt on 11/12/2015.
+ * Mastermind Coursework - mb2070
+ * This is a graphical and textual implementation of the classic board game 'Mastermind'
+ * It can be played by any combination of two human or AI players
+ * By default, it launches in GUI mode. To launch in textual mode, use the command line argument: textual (e.g. 'java Mastermind textual'
+ *
+ * @author mb2070
+ * @version 1.0
+ * @since 11/12/2015
  */
 
 import java.io.FileInputStream;
@@ -7,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
-
 
 public class Mastermind {
 	private static boolean guiMode = true;
@@ -38,8 +44,8 @@ public class Mastermind {
 		game.setOutput(output);
 
 		while (true) {
-			game.update();
 			output.update();
+			game.update();
 		}
 	}
 

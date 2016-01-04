@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -24,6 +25,10 @@ public class Board {
 		}
 	}
 
+	public boolean isEmpty() {
+		return(stack.isEmpty());
+	}
+
 	public boolean isFull() {
 		return (stack.size() == length);
 	}
@@ -43,6 +48,20 @@ public class Board {
 			System.err.println("Board is empty");
 			return (null);
 		}
+	}
+
+	public void setFeedback(int index, Combination feedback) {
+		stack.get(index).setFeedback(feedback);
+	}
+
+	public int getFeedbacksGiven() {
+		int i=0;
+		for (PreviousGuess p : stack) {
+			if (p.getFeedback() != null) {
+				i++;
+			}
+		}
+		return(i);
 	}
 
 	public PreviousGuess getCombination(int index) {
@@ -71,6 +90,12 @@ public class Board {
 	}
 
 	public PreviousGuess[] getPreviousGuesses() {
-		return ((PreviousGuess[]) stack.toArray());
+		if (!stack.isEmpty()) {
+			Object[] objArray = stack.toArray();
+			PreviousGuess[] array = Arrays.copyOf(objArray, objArray.length, PreviousGuess[].class);
+			return (array);
+		} else {
+			return(null);
+		}
 	}
 }

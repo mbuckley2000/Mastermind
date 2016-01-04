@@ -16,7 +16,6 @@ public class GetCombinationWindow extends JFrame {
 		super(title);
 		setSize(100 * length + 100, 200);
 		setLayout(new FlowLayout());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(locationX, locationY);
 
 		JLabel message = new JLabel(title);

@@ -10,11 +10,13 @@ public class AIInput implements Input {
 	private byte[] lastGuessID;
 	private Board board;
 	private Combination code;
+	private Set<Combination> feedbackUsedForRemoval;
 
 	public AIInput(Board board) {
 		this.board = board;
 		lastGuess = new PreviousGuess(null);
 		possibleCombinations = new HashSet();
+		feedbackUsedForRemoval = new HashSet<>();
 		fillPossibleCombinations(new byte[board.getNumberOfPegs()], board.getNumberOfColours(), board.getNumberOfPegs());
 	}
 
@@ -69,24 +71,30 @@ public class AIInput implements Input {
 		return (code);
 	}
 
+
+	//MAKE IT REMOVE THE LAST GUESS IF IT ISNT THE CODE
+
 	private void removeImpossibleCombinations() {
-		if (board.peek() != null) {
-			Combination feedback = board.peek().getFeedback();
-			if (feedback != null) {
-				Stack<byte[]> impossibleCombinations = new Stack();
-				impossibleCombinations.add(lastGuessID);
-				lastGuess.setFeedback(feedback);
-				byte blackPegs = (byte) feedback.countPegs(Peg.black);
-				byte whitePegs = (byte) feedback.countPegs(Peg.white);
-				if (blackPegs + whitePegs != 0) {
-					for (byte[] ba : possibleCombinations) {
-						if (getFeedback(lastGuessID, ba)[0] != blackPegs || getFeedback(lastGuessID, ba)[1] != whitePegs) {
-							impossibleCombinations.add(ba);
+		if (!board.isEmpty()) {
+			for (PreviousGuess p : board.getPreviousGuesses()) {
+				if (!feedbackUsedForRemoval.contains(p.getFeedback())) {
+					byte[] guess = p.getGuess().toIDArray();
+					Combination feedback = p.getFeedback();
+					if (feedback != null) {
+
+						Stack<byte[]> impossibleCombinations = new Stack();
+						byte blackPegs = (byte) feedback.countPegs(Peg.black);
+						byte whitePegs = (byte) feedback.countPegs(Peg.white);
+						for (byte[] ba : possibleCombinations) {
+							if (getFeedback(guess, ba)[0] != blackPegs || getFeedback(guess, ba)[1] != whitePegs || Arrays.equals(guess, ba)) {
+								impossibleCombinations.add(ba);
+							}
+						}
+						while (!impossibleCombinations.isEmpty()) {
+							possibleCombinations.remove(impossibleCombinations.pop());
 						}
 					}
-				}
-				while (!impossibleCombinations.isEmpty()) {
-					possibleCombinations.remove(impossibleCombinations.pop());
+					feedbackUsedForRemoval.add(p.getFeedback());
 				}
 			}
 		}

@@ -6,7 +6,6 @@ public class Game {
 	private Player codeMaker;
 	private Player codeBreaker;
 	private int gameState;
-	private Combination code;
 	private int guessCount;
 	private Output output;
 
@@ -22,8 +21,7 @@ public class Game {
 	public void update() {
 		switch (gameState) {
 			case 0: { //Code maker is making the code
-				code = codeMaker.getInput().getCode();
-				board.setCode(code);
+				board.setCode(codeMaker.getInput().getCode());
 				gameState = 1;
 				break;
 			}
@@ -31,7 +29,7 @@ public class Game {
 			case 1: { //Code breaker is guessing
 				Combination guess = codeBreaker.getInput().getGuess();
 				board.add(new PreviousGuess(guess));
-				if (guess.equals(code) || board.isFull()) {
+				if (guess.equals(board.getCode()) || board.isFull()) {
 					//Somebody won
 					gameState = 3;
 				} else {
@@ -50,7 +48,7 @@ public class Game {
 
 			case 3: { //End of game
 				//Guesscount print
-				if (board.peek().getGuess().equals(code)) {
+				if (board.peek().getGuess().equals(board.getCode())) {
 					//Codebreaker won
 					output.println("Code breaker wins");
 				} else {
@@ -58,6 +56,7 @@ public class Game {
 					output.println("Code maker wins");
 				}
 				gameState = 4;
+				output.println("Game over in " + guessCount + " guesses");
 				break;
 			}
 

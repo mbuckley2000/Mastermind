@@ -3,11 +3,13 @@
  */
 public class GraphicalOutput implements Output {
 	private BoardWindow boardWindow;
+	private GameControlsWindow gameControlsWindow;
 	private TextOutputWindow textOutputWindow;
 
 	public GraphicalOutput(Board board) {
 		boardWindow = new BoardWindow(board, 50, 25);
 		textOutputWindow = new TextOutputWindow(boardWindow.getWidth(), 200);
+		gameControlsWindow = new GameControlsWindow();
 	}
 
 	public void update() {

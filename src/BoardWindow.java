@@ -27,15 +27,6 @@ public class BoardWindow extends JFrame {
 		setVisible(true);
 		drawnGuesses = new HashSet();
 		drawnFeedbacks = new HashSet();
-		JButton saveButton = new JButton("Save & Quit");
-		getLayeredPane().add(saveButton, new Integer(3));
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Mastermind.save("mastermind_save");
-				System.exit(0);
-			}
-		});
 	}
 
 	public void update() {

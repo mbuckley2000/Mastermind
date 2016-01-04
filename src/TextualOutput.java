@@ -10,6 +10,7 @@ public class TextualOutput implements Output {
 
 	public void update() {
 		clearOutput();
+		drawLogo();
 		drawBoard();
 	}
 
@@ -22,25 +23,36 @@ public class TextualOutput implements Output {
 	}
 
 	private void clearOutput() {
-		try {
-			Runtime.getRuntime().exec("clear");
-		} catch (Exception e) {
+		print("\033[H\033[2J");
+	}
 
-		}
+	private void drawLogo() {
+		println("MASTERMIND");
+		println("");
 	}
 
 	private void drawBoard() {
-		for (PreviousGuess row : board.getPreviousGuesses()) {
-			Combination guess = row.getGuess();
-			Combination feedback = row.getFeedback();
-			if (guess != null) {
-				print(guess.toString());
+		if (!board.isEmpty()) {
+			println("Board:");
+			for (PreviousGuess row : board.getPreviousGuesses()) {
+				Combination guess = row.getGuess();
+				Combination feedback = row.getFeedback();
+				if (guess != null) {
+					print(guess.toString());
+				}
+				if (feedback != null) {
+					print("\t\t\t");
+					print(feedback.toString());
+				}
+				printLines("", 2);
 			}
-			if (feedback != null) {
-				print("     --     ");
-				print(feedback.toString());
-			}
-			println("");
+			printLines("", 10);
+		}
+	}
+
+	private void printLines(String message, int n) {
+		for (int i=0; i<n; i++) {
+			println(message);
 		}
 	}
 }

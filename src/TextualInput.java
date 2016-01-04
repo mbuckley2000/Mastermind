@@ -25,7 +25,6 @@ public class TextualInput implements Input {
 
 	public Combination getFeedback() {
 		System.out.println("Please enter your feedback:");
-		Combination feedback = new Combination(board.getNumberOfPegs());
 		return (getCombination(board.getNumberOfPegs()));
 	}
 
@@ -37,8 +36,7 @@ public class TextualInput implements Input {
 			//Get color as input
 			colour = scanner.next();
 			if (colour == "save") {
-				System.out.println("Enter filename to save: ");
-				//game.save(input.next());
+				Mastermind.save("save");
 				System.out.println("Game saved! Quitting...");
 				System.exit(0);
 			}

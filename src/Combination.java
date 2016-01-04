@@ -80,10 +80,10 @@ public class Combination {
 		String output = "";
 		for (int i = 0; i < length; i++) {
 			try {
-				output = output + " " + pegs[i].toString();
+				output = output + "\t" + pegs[i].toString();
 			} catch (java.lang.NullPointerException e) {
 				//No Peg
-				output = output + " Empty";
+				//output = output + " Empty";
 			}
 		}
 		return (output);
