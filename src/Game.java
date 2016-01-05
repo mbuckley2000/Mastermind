@@ -31,6 +31,13 @@ public class Game {
 		gameState = 0;
 	}
 
+	public static Game getDefaultGame(boolean graphical) {
+		Board board = new Board(12, 4, 6);
+		Player codeMaker = new AI(board);
+		Player codeBreaker = new Human(graphical, board);
+		return (new Game(board, codeMaker, codeBreaker));
+	}
+
 	/**
 	 * Updates the game logic. What happens depends on the value of gameState.
 	 * There are five game states:
@@ -44,30 +51,41 @@ public class Game {
 	 * </ul>
 	 */
 	public void update() {
+
 		switch (gameState) {
 			case 0: { //Code maker is making the code
-				getCodeFromCodeMaker();
+				board.setCode(codeMaker.getInput().getCode());
+				output.println("Code is set! Starting game");
 				gameState = 1;
 				break;
 			}
 
 			case 1: { //Code breaker is guessing
-				getGuessFromCodeBreaker();
+				board.addGuess(new Guess(codeBreaker.getInput().getGuess()));
+
 				if (whoHasWon() != null) {
-					gameState = 3; //Somebody won
+					//Somebody won
+					gameState = 3;
+				} else {
+					gameState = 2;
 				}
-				gameState = 2;
 				break;
 			}
 
 			case 2: { //Code maker is giving feedback
-				getFeedbackFromCodeMaker();
+				board.peek().setFeedback(codeMaker.getInput().getFeedback());
 				gameState = 1;
 				break;
 			}
 
 			case 3: { //End of game
-				outputWinMessages();
+				if (whoHasWon() == codeBreaker) {
+					//codeBreaker won
+					output.println("Code breaker wins");
+				} else {
+					//codeMaker won
+					output.println("Code maker wins");
+				}
 				gameState = 4;
 				break;
 			}
@@ -82,7 +100,7 @@ public class Game {
 			}
 
 			default: {
-				//Invalid gamestate
+				//Invalid gameState
 				System.err.println("Invalid gameState: " + gameState);
 				System.err.println("This is probably due to a corrupt or incorrectly loaded save file");
 				System.exit(1);
@@ -92,40 +110,9 @@ public class Game {
 	}
 
 	/**
-	 * Gets the code breaker's guess and adds it to the board
-	 */
-	private void getGuessFromCodeBreaker() {
-		board.addGuess(new Guess(codeBreaker.getInput().getGuess()));
-	}
-
-	/**
-	 * Gets the code maker's code
-	 */
-	private void getCodeFromCodeMaker() {
-		board.setCode(codeMaker.getInput().getCode());
-	}
-
-	/**
-	 * Gets feedback from the code maker on the last guess
-	 */
-	private void getFeedbackFromCodeMaker() {
-		board.peek().setFeedback(codeMaker.getInput().getFeedback());
-	}
-
-	/**
-	 * Outputs win messages depending on which player won
-	 */
-	private void outputWinMessages() {
-		if (whoHasWon() == codeBreaker) {
-			output.println("Code breaker wins");
-		} else {
-			output.println("Code maker wins");
-		}
-	}
-
-	/**
-	 * Returns the gamestate
-	 * @return Current gameState
+	 * Gets the current gameState
+	 *
+	 * @return The current gameState
 	 */
 	public int getState() {
 		return (gameState);
@@ -155,6 +142,7 @@ public class Game {
 	 * @param board The board
 	 */
 	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 	/**
@@ -190,17 +178,17 @@ public class Game {
 	 */
 	private Player whoHasWon() {
 		if (board.peek().getGuess().equals(board.getCode())) {
-			return(codeMaker);
+			return (codeMaker);
 		} else if (board.isFull()) {
-			return(codeBreaker);
+			return (codeBreaker);
 		}
-		return(null);
+		return (null);
 	}
 
 	/**
-	 * Set whether or not the game is in graphical or textual mode. This determines the end-game procedure. It does not change the output mode of the game
+	 * Set whether the game is in graphical mode (true) or textual mode (false). This determines the end-game procedure. It does not change the output mode of the game
 	 *
-	 * @param guiMode
+	 * @param guiMode Whether or not the game is in graphical mode
 	 */
 	public void setGuiMode(boolean guiMode) {
 		this.guiMode = guiMode;

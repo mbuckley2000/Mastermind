@@ -5,11 +5,23 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * A JComponent that contains an image and has the facility to draw this image to any position and at any size on a target JFrame
+ * Can be drawn onto a JFrame by doing JFrame.add(Sprite);
+ *
+ * @author mb2070
+ * @since 24/12/2015
+ */
+
 public class Sprite extends JComponent {
 	private BufferedImage image;
 	private Vector2i position;
 	private Vector2i size;
 
+	/**
+	 * @param filePath Filepath of the image
+	 * @param target   Target JFrame the image will be drawn onto
+	 */
 	public Sprite(String filePath, JFrame target) {
 		super();
 		try {
@@ -30,10 +42,6 @@ public class Sprite extends JComponent {
 	public void setSize(int x, int y) {
 		size.x = x;
 		size.y = y;
-	}
-
-	public Vector2i getPosition() {
-		return (position);
 	}
 
 	@Override

@@ -1,16 +1,25 @@
 /**
- * Created by matt on 02/01/2016.
+ * A textual output for the mastermind game
+ * Outputs to the Standard Output (System.out)
+ *
+ * @author mb2070
+ * @since 02/01/2016
  */
+
 public class TextualOutput implements Output {
-	Board board;
+	private Board board;
 
 	public TextualOutput(Board board) {
 		this.board = board;
 	}
 
+	/**
+	 * Updates the text view of the board
+	 */
 	public void update() {
 		clearOutput();
 		drawLogo();
+		printAvailablePegs();
 		drawBoard();
 	}
 
@@ -22,19 +31,36 @@ public class TextualOutput implements Output {
 		System.out.println(message);
 	}
 
+	/**
+	 * Clears the console view using ASCII modifiers
+	 */
 	private void clearOutput() {
 		print("\033[H\033[2J");
 	}
 
+	/**
+	 * Prints the mastermind logo
+	 */
 	private void drawLogo() {
 		println("MASTERMIND");
 		println("");
 	}
 
+	/**
+	 * Prints a list of available peg colours
+	 */
+	private void printAvailablePegs() {
+		System.out.println("Available Peg Colours: " + new Combination(Peg.getAvailablePegs()).toString());
+		println("");
+	}
+
+	/**
+	 * Prints the board in its current state
+	 */
 	private void drawBoard() {
 		if (!board.isEmpty()) {
 			println("Board:");
-			for (PreviousGuess row : board.getPreviousGuesses()) {
+			for (Guess row : board.getPreviousGuesses()) {
 				Combination guess = row.getGuess();
 				Combination feedback = row.getFeedback();
 				if (guess != null) {
@@ -46,12 +72,18 @@ public class TextualOutput implements Output {
 				}
 				printLines("", 2);
 			}
-			printLines("", 10);
+			printLines("", 3);
 		}
 	}
 
+	/**
+	 * Prints multiple lines of the same string
+	 *
+	 * @param message String to print
+	 * @param n       Number of times to print the string
+	 */
 	private void printLines(String message, int n) {
-		for (int i=0; i<n; i++) {
+		for (int i = 0; i < n; i++) {
 			println(message);
 		}
 	}
