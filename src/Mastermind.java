@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
  * <p>It can be played by any combination of two human or AI players</p>
  * <p>By default, it launches in GUI mode. To launch in textual mode, use the command line argument 'textual' (i.e. 'java Mastermind textual'</p>
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 11/12/2015
  */
 

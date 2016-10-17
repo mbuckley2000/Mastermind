@@ -2,7 +2,7 @@
  * A textual output for the mastermind game
  * Outputs to the Standard Output (System.out)
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 02/01/2016
  */
 

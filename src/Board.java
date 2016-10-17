@@ -5,7 +5,7 @@ import java.util.Stack;
  * The board class is used to hold the virtual board for Mastermind.
  * It is made up of a stack of Guess objects
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 13/12/15
  */
 

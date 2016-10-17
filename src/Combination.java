@@ -1,7 +1,7 @@
 /**
  * A Combination of Peg objects for the Mastermind game. The board consists of a collection of these
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 11/12/2015
  */
 

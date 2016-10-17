@@ -1,13 +1,12 @@
+import java.util.*;
+
 /**
  * An AI driven implementation of the Input interface for the Mastermind game.
  * For clarification: this class takes no input from the human user, it implements the Input interface because the Game class sees it the same way it sees a human player
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 23/12/2015
  */
-
-import java.util.*;
-
 public class AIInput implements Input {
 	private Set<byte[]> possibleCombinations;
 	private Board board;
@@ -191,7 +190,7 @@ public class AIInput implements Input {
 	 */
 	private void sleepRandom() {
 		try {
-			Thread.currentThread().sleep(new Random().nextInt(1000) + 1000);
+			Thread.sleep(new Random().nextInt(1000) + 1000);
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 		}

@@ -2,7 +2,7 @@
  * A 2-Dimensional vector class for integers
  * The X and Y value of the vector can be publicly accessed
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 24/12/2015
  */
 

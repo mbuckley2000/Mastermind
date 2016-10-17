@@ -9,7 +9,7 @@ import java.io.IOException;
  * A JComponent that contains an image and has the facility to draw this image to any position and at any size on a target JFrame
  * Can be drawn onto a JFrame by doing JFrame.add(Sprite);
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 24/12/2015
  */
 

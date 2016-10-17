@@ -6,7 +6,7 @@
  * <li>The feedback on the guess. This is added at a later time, not at construction</li>
  * </ul>
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 24/12/2015
  */
 public class Guess {

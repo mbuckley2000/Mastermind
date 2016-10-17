@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
  * A JFrame that contains game controls.
  * This currently consists of a save button
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 03/01/2016
  */
 public class GameControlsWindow extends JFrame {
@@ -18,7 +18,7 @@ public class GameControlsWindow extends JFrame {
 	 */
 	public GameControlsWindow() {
 		super("Mastermind - Game Controls");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLayout(new FlowLayout());
 
 		JButton saveButton = new JButton("Save & Exit");

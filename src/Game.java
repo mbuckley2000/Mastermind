@@ -4,7 +4,7 @@
  * Communicates with two Player interfaces for input.
  * Communicates with an Output interface for output.
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 13/12/2015
  */
 
@@ -91,9 +91,7 @@ public class Game {
 			}
 
 			case 4: {   //Game over
-				if (guiMode) {
-					//Do nothing until the window is closed
-				} else {
+				if (!guiMode) {
 					System.exit(0);
 				}
 				break;

@@ -3,7 +3,7 @@ import javax.swing.*;
 /**
  * A swing JFrame that is used to output text to a user who is in GUI mode
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 30/12/2015
  */
 public class TextOutputWindow extends JFrame {
@@ -18,7 +18,7 @@ public class TextOutputWindow extends JFrame {
 	public TextOutputWindow(int width, int height) {
 		super("Mastermind - Output");
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		listModel = new DefaultListModel();
 		list = new JList(listModel);
 		JScrollPane scrollPane = new JScrollPane();

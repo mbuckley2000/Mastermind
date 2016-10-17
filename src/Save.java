@@ -3,7 +3,7 @@ import java.io.Serializable;
 /**
  * A serializable class that stores all data and methods necessary to reconstruct an in-progress mastermind game
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 29/12/2015
  */
 public class Save implements Serializable {

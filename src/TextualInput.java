@@ -1,14 +1,13 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
 /**
  * A textual input for the mastermind game
  * Uses System.in scanner
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 22/12/2015
  */
-
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class TextualInput implements Input {
 	private Scanner scanner;
 	private Board board;
@@ -26,7 +25,7 @@ public class TextualInput implements Input {
 	 *
 	 * @return The created Game object
 	 */
-	public static Game newGameMenu() {
+	private static Game newGameMenu() {
 		int boardLength = 12;
 
 		int numberOfColours = getInt("Please enter the number of colours you would like (3-8)", 3, 8);

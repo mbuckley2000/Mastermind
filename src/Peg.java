@@ -3,7 +3,7 @@
  * Contains many static predefined pegs, which have corresponding images for GUI mode.
  * All pegs are given an ID when created. These IDs are used instead of Peg objects to speed up AI processing and to use less memory
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 11/12/2015
  */
 

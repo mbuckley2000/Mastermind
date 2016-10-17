@@ -2,7 +2,7 @@
  * A graphical input for the Mastermind game.
  * Implements Input as an interface
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 24/12/2015
  */
 
@@ -55,7 +55,7 @@ public class GraphicalInput implements Input {
 		GetCombinationWindow dialog = new GetCombinationWindow(title, options, length, 600, 200);
 		while (dialog.getCombination() == null) {
 			try {
-				Thread.currentThread().sleep(500);
+				Thread.sleep(500);
 			} catch (Exception e) {
 				Thread.currentThread().interrupt();
 			}

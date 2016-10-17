@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 /**
  * A JFrame that displays a menu to the user, allowing them to create or load a new mastermind Game object
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 30/12/2015
  */
 public class MenuWindow extends JFrame {

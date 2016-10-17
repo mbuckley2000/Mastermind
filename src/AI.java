@@ -1,7 +1,7 @@
 /**
  * An AI implementation of the Player interface
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 02/01/2016
  */
 

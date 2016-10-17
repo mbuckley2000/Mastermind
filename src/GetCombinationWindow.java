@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 /**
  * A JFrame which gets a combination of pegs from the user
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 28/12/2015
  */
 public class GetCombinationWindow extends JFrame {

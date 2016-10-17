@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * A JFrame window that displays the board of a Mastermind game
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 02/01/2016
  */
 public class BoardWindow extends JFrame {
@@ -30,7 +30,7 @@ public class BoardWindow extends JFrame {
 		setSize(board.getNumberOfPegs() * 100 + 150, board.getMaxLength() * 50 + 100);
 		setResizable(false);
 		getLayeredPane().add(new Sprite("images/wood.jpg", this), new Integer(0));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		drawEmptyHoles();
 		setVisible(true);
 		drawnGuesses = new HashSet();

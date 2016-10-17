@@ -1,7 +1,7 @@
 /**
  * User input interface for the Mastermind game
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 22/12/2015
  */
 

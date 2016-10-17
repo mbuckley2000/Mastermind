@@ -5,7 +5,7 @@ import java.awt.*;
  * A graphical implementation of the output interface for the Mastermind game
  * Contains a BoardWindow, a TextOutputWindow, and a GameControlWindow
  *
- * @author mb2070
+ * @author Matt Buckley
  * @since 02/01/2016
  */
 public class GraphicalOutput implements Output {
